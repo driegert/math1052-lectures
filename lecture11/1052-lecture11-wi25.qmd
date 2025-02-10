@@ -1,0 +1,50 @@
+---
+title: "Lecture 11 - Multiple Linear Regression"
+subtitle: "MATH 1052"
+author: "Richard Boire & Dave Riegert"
+institute: "Trent University"
+execute: 
+  echo: true
+format:
+  revealjs:
+    theme: default
+    margin: 0.05
+    incremental: false
+    logo: TUPMS.png
+    css: style.css
+    pdf-separate-fragments: false
+    auto-stretch: false
+filters:
+  - webr
+slide-number: true
+smaller: false
+---
+
+# A title
+```{r}
+#| include: false
+
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+library(ggfortify)
+library(janitor)
+library(broom)
+
+theme_set(theme_bw())
+```
+
+<script type="text/x-mathjax-config"> 
+    MathJax.Hub.Config({ 
+        "HTML-CSS": { scale: 85, linebreaks: { automatic: true } }, 
+        SVG: { linebreaks: { automatic:true } }, 
+        displayAlign: "center" });
+</script>
+
+## A Slide Title
+
+
+```{webr-r}
+#| fig-align: center
+atib <- tibble(x = rnorm(10), y = 2 + 4*x + rnorm(10))
+```
