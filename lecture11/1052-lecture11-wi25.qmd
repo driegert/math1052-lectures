@@ -14,6 +14,7 @@ format:
     css: style.css
     pdf-separate-fragments: false
     auto-stretch: false
+    chalkboard: true
 filters:
   - webr
 slide-number: true
