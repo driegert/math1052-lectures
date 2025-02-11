@@ -17,9 +17,8 @@ format:
     chalkboard:
       chalk-effect: 0.2
       chalk-width: 5
-      # src: chalkboard.json
-      printNotes: true
-    multiplex: true
+      src: chalkboard-many.json
+    multiplex: false
 filters:
   - webr
 webr:
@@ -87,3 +86,13 @@ atib %>% ggplot(aes(x = x, y = y)) +
 atib %>% ggplot(aes(x = x)) + 
   geom_histogram(colour = "white", bins = 4)
 ```
+
+## More Drawing Here
+
+- item one
+- item two
+- item three
+- 90 degrees
+- 180 degrees
+- 270 degrees
+- 360 degrees
