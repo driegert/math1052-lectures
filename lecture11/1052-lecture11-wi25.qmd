@@ -9,8 +9,8 @@ format:
   revealjs:
     width: 1050
     height: 700
-    min-scale: 1
-    max-scale: 1
+    # min-scale: 1
+    # max-scale: 1
     theme: default
     margin: 0.05
     incremental: false
