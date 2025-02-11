@@ -15,9 +15,14 @@ format:
     pdf-separate-fragments: false
     auto-stretch: false
     chalkboard:
-      src: lecture11-annotations.json
+      chalk-effect: 0.2
+      chalk-width: 5
+      # src: chalkboard.json
+    multiplex: true
 filters:
   - webr
+webr:
+  packages: ["tibble", "ggplot2"]
 slide-number: true
 smaller: false
 ---
@@ -45,8 +50,26 @@ theme_set(theme_bw())
 
 ## A Slide Title
 
+```{webr-r}
+#| context: setup
+#| autorun: tru
+set.seed(1234)
+```
 
 ```{webr-r}
-#| fig-align: center
+#| autorun: true
+
 atib <- tibble(x = rnorm(10), y = 2 + 4*x + rnorm(10))
+atib %>% ggplot(aes(x = x, y = y)) + 
+  geom_point()
+```
+
+## A second slide {style="font-size:70%;"}
+
+
+```{webr-r}
+#| autorun: true
+
+atib %>% ggplot(aes(x = x)) + 
+  geom_histogram(colour = "white", bins = 4)
 ```
