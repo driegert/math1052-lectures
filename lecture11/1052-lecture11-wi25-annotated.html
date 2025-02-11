@@ -1992,6 +1992,19 @@ Richard Boire &amp; Dave Riegert
         displayAlign: "center" });
 </script>
 </section>
+<section id="drawing-on-this-slide" class="slide level2">
+<h2>Drawing on this slide</h2>
+<p>There is some stuff on this slide…</p>
+<p><span class="math display">\[
+\hat{y} = mx + b
+\]</span></p>
+<ul>
+<li>and then a list</li>
+<li>because lists are great</li>
+<li>and better</li>
+<li>and even more betterer</li>
+</ul>
+</section>
 <section id="a-slide-title" class="slide level2">
 <h2>A Slide Title</h2>
 <div id="qwebr-insertion-location-1"></div>
@@ -2021,8 +2034,6 @@ Richard Boire &amp; Dave Riegert
   <script src="1052-lecture11-wi25-annotated_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="1052-lecture11-wi25-annotated_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
   <script src="1052-lecture11-wi25-annotated_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="1052-lecture11-wi25-annotated_files/libs/revealjs/plugin/multiplex/socket.io.js"></script>
-  <script src="1052-lecture11-wi25-annotated_files/libs/revealjs/plugin/multiplex/multiplex.js"></script>
   <script src="1052-lecture11-wi25-annotated_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -2045,8 +2056,7 @@ Richard Boire &amp; Dave Riegert
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true,"chalkEffect":0.2,"chalkWidth":5},
-'multiplex': {"secret":null,"id":"e22074e349835d02","url":"https://reveal-multiplex.glitch.me/"},
+'chalkboard': {"buttons":true,"chalkEffect":0.2,"chalkWidth":5,"src":"chalkboard.json","printNotes":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -2220,7 +2230,7 @@ Richard Boire &amp; Dave Riegert
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
-          
+          RevealNotes,
           RevealSearch,
           RevealZoom
         ]

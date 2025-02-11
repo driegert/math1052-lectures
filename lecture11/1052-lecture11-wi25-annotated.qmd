@@ -17,8 +17,9 @@ format:
     chalkboard:
       chalk-effect: 0.2
       chalk-width: 5
-      # src: chalkboard.json
-    multiplex: true
+      src: chalkboard.json
+      printNotes: true
+    multiplex: false
 filters:
   - webr
 webr:
@@ -47,6 +48,19 @@ theme_set(theme_bw())
         SVG: { linebreaks: { automatic:true } }, 
         displayAlign: "center" });
 </script>
+
+## Drawing on this slide
+
+There is some stuff on this slide... 
+
+$$
+\hat{y} = mx + b
+$$
+
+- and then a list
+- because lists are great
+- and better
+- and even more betterer
 
 ## A Slide Title
 
