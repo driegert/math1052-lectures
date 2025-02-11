@@ -7,10 +7,10 @@ execute:
   echo: true
 format:
   revealjs:
-    width: 1200
-    height: 800
-    min-scale: 1
-    max-scale: 1
+    # width: 1200
+    # height: 800
+    # min-scale: 1
+    # max-scale: 1
     theme: default
     margin: 0.05
     incremental: false
@@ -23,7 +23,7 @@ format:
       #   - RevealChalkboard
       chalk-effect: 0.2
       chalk-width: 5
-      # src: chalkboard-many3.json
+      # src: chalkboard-new_test.json
     multiplex: false
 filters:
   - webr

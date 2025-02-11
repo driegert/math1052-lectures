@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="1052-lecture11-wi25-new_test_files/libs/clipboard/clipboard.min.js"></script>
-<script src="1052-lecture11-wi25-new_test_files/libs/quarto-html/tabby.min.js"></script>
-<script src="1052-lecture11-wi25-new_test_files/libs/quarto-html/popper.min.js"></script>
-<script src="1052-lecture11-wi25-new_test_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="1052-lecture11-wi25-new_test_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="1052-lecture11-wi25-new_test_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="1052-lecture11-wi25-new_test_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="1052-lecture11-LM_multiple_regression_files/libs/clipboard/clipboard.min.js"></script>
+<script src="1052-lecture11-LM_multiple_regression_files/libs/quarto-html/tabby.min.js"></script>
+<script src="1052-lecture11-LM_multiple_regression_files/libs/quarto-html/popper.min.js"></script>
+<script src="1052-lecture11-LM_multiple_regression_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="1052-lecture11-LM_multiple_regression_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="1052-lecture11-LM_multiple_regression_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="1052-lecture11-LM_multiple_regression_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.6.40">
 
   <meta name="author" content="Richard Boire &amp; Dave Riegert">
@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="1052-lecture11-wi25-new_test_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="1052-lecture11-wi25-new_test_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="1052-lecture11-LM_multiple_regression_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="1052-lecture11-LM_multiple_regression_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,14 +29,14 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="1052-lecture11-wi25-new_test_files/libs/revealjs/dist/theme/quarto-bbe7401fe57d4b791b917637bb662036.css">
+  <link rel="stylesheet" href="1052-lecture11-LM_multiple_regression_files/libs/revealjs/dist/theme/quarto-bbe7401fe57d4b791b917637bb662036.css">
   <link rel="stylesheet" href="style.css">
-  <link href="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -124,6 +124,17 @@
       margin-right: 0; 
     }
   </style>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/plotly-binding-4.10.4/plotly.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/typedarray-0.1/typedarray.min.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/jquery-3.5.1/jquery.min.js"></script>
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+  <link href="1052-lecture11-LM_multiple_regression_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
@@ -402,7 +413,7 @@
   // Document level settings ----
 
   // Determine if we need to install R packages
-  globalThis.qwebrInstallRPackagesList = ['tibble', 'ggplot2'];
+  globalThis.qwebrInstallRPackagesList = ['tibble', 'ggplot2', 'tidyverse', 'ggfortify', 'janitor', 'broom', 'Lock5Data'];
 
   // Specify possible locations to search for the repository
   globalThis.qwebrPackageRepoURLS = ['https://repo.r-wasm.org/'];
@@ -424,7 +435,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"code":"library(knitr)\nlibrary(kableExtra)\nlibrary(tidyverse)\nlibrary(ggfortify)\nlibrary(janitor)\nlibrary(broom)\n\ntheme_set(theme_bw())","id":1,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"include":"false","label":"unnamed-chunk-1","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# stuff\nset.seed(1234)","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"setup","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-2","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# stuff\n\natib <- tibble(x = rnorm(10), y = 2 + 4*x + rnorm(10))\natib %>% ggplot(aes(x = x, y = y)) + \n  geom_point()","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-3","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# stuff\n\natib %>% ggplot(aes(x = x)) + \n  geom_histogram(colour = \"white\", bins = 4)","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-4","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+  globalThis.qwebrCellDetails = [{"code":"webr::install(\"Lock5Data\")\ndata(\"GPAbySex\", package = \"Lock5Data\")\ngpa <- GPAbySex\ngpa2 <- gpa %>%\n  mutate(GPA = cut(GPA, breaks = c(0, 1, 1.3, 1.7, 2.0, 2.3, \n                   2.7, 3.0, 3.3, 3.7, 4.0, 4.00001) - 0.00001, \n         labels = c(\"F\", \"D\", \"D+\", \"C-\", \"C\", \"C+\", \"B-\", \"B\", \"B+\",\n                   \"A-\", \"A/A+\")))\n\nsurvey_raw <- gpa2 %>% na.omit() %>% \n  mutate(Grade = substr(GPA, start = 1, stop = 1)) %>% \n  mutate(Sex = ifelse(CodedSex == 0, \"Female\", \"Male\"))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"echo":"false","editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-1","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# glimpse","id":2,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-2","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"survey <- survey_raw %>% \n  mutate(Grade = factor(Grade, levels = c(\"A\", \"B\", \"C\", \"D\", \"F\"))) %>% \n  mutate(Sex = factor(Sex))","id":3,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"factor-variables","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"survey %>% \n  count(Grade) %>% kable()","id":4,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"count-grade","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"survey %>% \n  count(Sex) %>% kable()","id":5,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"count-sex","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"","id":6,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-6","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"survey %>% ggplot(aes(x = Pulse, y = Exercise)) +\n  geom_point() +\n  geom_smooth(method = \"lm\", se = FALSE, formula = y ~ x) +\n  labs(title = \"Exercise vs Pulse\", x = \"Pulse (bpm)\", \n       y = \"Exercise (hours/week)\")\n  ","id":7,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"plot-slr","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"new_dat <- data.frame(Pulse = c(40, 50, 60, 70))","id":8,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"predict-exercise","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"survey %>% ggplot(aes(x = Pulse, y = Exercise)) + geom_point() + \n  geom_smooth(method = \"lm\", formula = y ~ x, level = 0.99)","id":9,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"slr-ci-plot","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"mod_2num <- survey %>% lm(Exercise ~ Pulse + SAT, data = .)\nmod_2num %>% tidy() %>% adorn_rounding(3) %>% \n  kable() %>% kable_styling(font_size = 28)","id":10,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"fit-two-numeric","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"new_dat3 <- tibble(Pulse = c(40, 40, 41, 60), SAT = c(1200, 1201, 1200, 1400))","id":11,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"predict-exercise-pulse-sat","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"","id":12,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-12","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"mod_2mr <- survey %>% lm(Exercise ~ Pulse + Grade, data = .)\nmod_2mr %>% tidy() %>% adorn_rounding(3) %>% \n  kable() %>% kable_styling(font_size = 24)","id":13,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"mr-pulse-grade","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"new_dat <- tibble(Pulse = rep(c(40, 41), each = 3), \n                  Grade = rep(c(\"A\", \"B\", \"C\"), 2))\nmod_2mr %>% predict(newdata = new_dat) %>% round(3)","id":14,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-14","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"mod_full <- survey %>% lm(Exercise ~ SAT + Grade + \n  Pulse + Piercings + Sex, data = .)","id":15,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"full-model-fit","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"## stuff here","id":16,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"p-value-model-selection","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# we have the full model already","id":17,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"setup-step-models","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"mod_step <- step(mod_null, scope = list(lower = mod_null, upper = mod_full), \n                 trace = 0)\n\nmod_step %>% tidy() %>% adorn_rounding(4) %>% \n  kable() %>% kable_styling(font_size = 24)","id":18,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"step-function-call","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
   </script>
   <script type="module">
@@ -1982,53 +1993,733 @@ Richard Boire &amp; Dave Riegert
 </div>
 
 </section>
-<section>
-<section id="a-title" class="title-slide slide level1 center">
-<h1>A title</h1>
-<div id="qwebr-insertion-location-1"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<!-- <script type="text/x-mathjax-config"> 
+<section id="slide-contents" class="slide level2">
+<h2>Slide Contents</h2>
+<script type="text/x-mathjax-config"> 
     MathJax.Hub.Config({ 
         "HTML-CSS": { scale: 85, linebreaks: { automatic: true } }, 
         SVG: { linebreaks: { automatic:true } }, 
         displayAlign: "center" });
-</script> -->
-</section>
-<section id="drawing-on-this-slide" class="slide level2">
-<h2>Drawing on this slide</h2>
-<p>There is some stuff on this slide…</p>
-<p><span class="math display">\[
-\hat{y} = mx + b
-\]</span></p>
+</script>
 <ul>
-<li>and then a list</li>
-<li>because lists are great</li>
-<li>and better</li>
-<li>and even more betterer</li>
+<li>factor variables
+<ul>
+<li>what to watch out for!</li>
+</ul></li>
+<li>linear regression with a categorical predictor
+<ul>
+<li>simple example - two categories;</li>
+<li>more involved example - MOAR categories;</li>
+</ul></li>
 </ul>
 </section>
-<section id="a-slide-title" class="slide level2">
-<h2>A Slide Title</h2>
+<section>
+<section id="many-predictors" class="title-slide slide level1 center">
+<h1>Many Predictors</h1>
+
+</section>
+<section id="the-data" class="slide level2">
+<h2>The Data</h2>
+<blockquote>
+<p>A first day survey over several different introductory statistics classes.</p>
+</blockquote>
+<ul>
+<li><code>SAT</code>: Combined SAT scores (out of 1600)</li>
+<li><code>Exercise</code>: Hours of exercise (per week)</li>
+<li><code>GPA</code>: Grade Point Average (letter grade)</li>
+<li><code>Pulse</code>: Pulse rate (beats per minute)</li>
+<li><code>Piercings</code>: Number of body piercings</li>
+<li><code>CodedSex</code>: 0=female or 1=male</li>
+</ul>
+<p>We want to understand whether any of these factors are associated with the amount of exercise per week.</p>
+<p>This means that <code>Exercise</code> is going to be our response variable.</p>
+</section>
+<section id="look-at-the-csv-file" class="slide level2" style="font-size:90%;">
+<h2>0. Look at the CSV File</h2>
+<p>First we’d look at the .csv file to see if there is anything that jumps out or anything we should be watching out for when working with this data.</p>
+<p>Next, we read in the data and examine the columns:</p>
+<div id="qwebr-insertion-location-1"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="glimpse" class="slide level2">
+<h2>Glimpse</h2>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="prepare-the-data" class="slide level2" style="font-size:90%;">
+<h2>0. Prepare the Data</h2>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
-<section id="a-second-slide" class="slide level2">
-<h2>A second slide</h2>
+<section id="explore-the-data" class="slide level2">
+<h2>1. Explore the Data</h2>
+<ul>
+<li>We can use the <code>count()</code> and <code>summarize()</code> functions to help with the numerical summaries.</li>
+<li><code>ggpairs</code>, scatterplots, barplots, histograms, etc. to visualize the data.</li>
+</ul>
+</section>
+<section id="eda-count" class="slide level2">
+<h2>1. EDA – <code>count()</code></h2>
+<ul>
+<li><code>count()</code> is a function that counts the number of times a unique value is observed in a column.</li>
+<li>Almost <em>always</em> used to examine categorical variables.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:48%;">
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</div><div class="column" style="width:48%;">
+<div id="qwebr-insertion-location-5"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</div></div>
 </section>
-<section id="more-drawing-here" class="slide level2">
-<h2>More Drawing Here</h2>
+<section id="eda-count---sex-and-grade" class="slide level2">
+<h2>1. EDA – <code>count()</code> - Sex and Grade</h2>
+<div id="qwebr-insertion-location-6"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="eda-summarize" class="slide level2" style="font-size:90%;">
+<h2>1. EDA – <code>summarize()</code></h2>
 <ul>
-<li>item one</li>
-<li>item two</li>
-<li>item three</li>
-<li>90 degrees</li>
-<li>180 degrees</li>
-<li>270 degrees</li>
-<li>360 degrees</li>
+<li>Summarize lets us calculate numerical statistics for columns.</li>
+<li><em>Typically</em> we would use <code>summarize()</code> with numeric variables, however it also let’s us “count” the number of observations using the <code>n()</code> function.</li>
+<li>We can combine <code>summarize()</code> with <code>group_by()</code> in order to calculate the numerical statistics for each column, separated by level of the <code>group_by()</code> variable(s).</li>
+</ul>
+<p>A straight forward use of <code>summarize()</code> would be:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Mean Exercise</th>
+<th style="text-align: right;">Mean SAT</th>
+<th style="text-align: right;">Mean Pulse</th>
+<th style="text-align: right;">Mean Piercings</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">8.892647</td>
+<td style="text-align: right;">1205.1</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">1.7</td>
+<td style="text-align: right;">340</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="eda-summarize-group_by" class="slide level2" style="font-size:90%;">
+<h2>1. Eda – <code>summarize()</code>, <code>group_by()</code></h2>
+<p>A more interesting table:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Grade</th>
+<th style="text-align: right;">Mean Exercise</th>
+<th style="text-align: right;">Mean SAT</th>
+<th style="text-align: right;">Mean Pulse</th>
+<th style="text-align: right;">Mean Piercings</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A</td>
+<td style="text-align: right;">7.9</td>
+<td style="text-align: right;">1300.0</td>
+<td style="text-align: right;">73.0</td>
+<td style="text-align: right;">1.8</td>
+<td style="text-align: right;">29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">8.9</td>
+<td style="text-align: right;">1205.5</td>
+<td style="text-align: right;">70.0</td>
+<td style="text-align: right;">1.7</td>
+<td style="text-align: right;">275</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C</td>
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">1125.8</td>
+<td style="text-align: right;">67.3</td>
+<td style="text-align: right;">1.6</td>
+<td style="text-align: right;">36</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="eda-ggpairs" class="slide level2" style="font-size:80%;">
+<h2>1. EDA – <code>ggpairs()</code></h2>
+
+<img data-src="1052-lecture11-LM_multiple_regression_files/figure-revealjs/pairs-plot-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="reflection" class="slide level2">
+<h2>Reflection</h2>
+<p>Do we think that there are any relationships here between <code>Exercise</code> and the other variables?</p>
+<ul>
+<li>Exercise and SAT:</li>
+</ul>
+<p>
+</p><ul>
+<li>Exercise and Pulse:</li>
+</ul>
+<p>
+</p><ul>
+<li>Exercise and Piercings:</li>
+</ul>
+<p>
+</p><ul>
+<li>Exercise and Grade:</li>
+</ul>
+<p>
+</p><ul>
+<li>Exercise and Sex:</li>
+</ul>
+</section></section>
+<section>
+<section id="fitting-the-model-detour" class="title-slide slide level1 center">
+<h1>Fitting the Model: Detour</h1>
+
+</section>
+<section id="back-in-time-slr" class="slide level2">
+<h2>Back in Time: SLR</h2>
+<ul>
+<li>Simple linear regression (SLR) is used to quantify the relationship between two numeric variables.</li>
+<li>We are fitting a model that has the form: <span id="eq-slr-true"><span class="math display">\[
+\hat{y} = \beta_{0} + \beta_{1}x
+\qquad(1)\]</span></span></li>
+<li>The parameters that we are estimating are the <span class="math inline">\(\beta\)</span>’s (aka, the model coefficients).</li>
+<li>Once we estimate the coefficients, we have a model of the form <span id="eq-slr-fit"><span class="math display">\[
+\hat{y} = b_{0} + b_{1}x
+\qquad(2)\]</span></span></li>
+<li><a href="#/eq-slr-fit" class="quarto-xref">Equation&nbsp;2</a> is the: fitted model equation, fitted model, model equation, line of best fit, regression model, etc.</li>
+</ul>
+</section>
+<section id="slr-exercise-and-pulse" class="slide level2">
+<h2>SLR: Exercise and Pulse</h2>
+<ul>
+<li>Let’s fit a model between <code>Exercise</code> and <code>Pulse</code>.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table caption-top" data-quarto-postprocess="true" style="font-size: 28px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">14.1173</td>
+<td style="text-align: right;">1.7546</td>
+<td style="text-align: right;">8.0460</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pulse</td>
+<td style="text-align: right;">-0.0747</td>
+<td style="text-align: right;">0.0247</td>
+<td style="text-align: right;">-3.0217</td>
+<td style="text-align: right;">0.0027</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>and our model equation is:</p>
+<p><span class="math display">\[
+\hat{E} = 14.1 - 0.075P
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\hat{E}\)</span> is the expected amount of exercise (hours per week); and</li>
+<li><span class="math inline">\(P\)</span> is the pulse rate (beats per minute).</li>
+</ul>
+</section>
+<section id="check-model-diagnostics" class="slide level2" style="font-size:90%;">
+<h2>Check Model Diagnostics</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1052-lecture11-LM_multiple_regression_files/figure-revealjs/slr-model-diagnostics-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p><br></p>
+<p><strong>Comments</strong>:</p>
+<ul>
+<li><strong>Resid vs.&nbsp;Fit</strong>: Some nonlinearity, but small number of observations</li>
+<li><strong>QQ-Plot</strong>: A bit right-skewed</li>
+<li><strong>Scale-Location</strong>: Some non-constant variance</li>
+</ul>
+</div></div>
+<p>Overall, these seem okay.</p>
+</section>
+<section id="full-hypothesis-test" class="slide level2" style="font-size:90%;">
+<h2>Full Hypothesis Test</h2>
+<ul>
+<li>Is there a linear relationship between <code>Exercise</code> and <code>Pulse</code> ?</li>
+<li>Let <span class="math inline">\(\beta_{1}\)</span> be the average change between <code>Pulse</code> and <code>Exercise</code> for all students in introductory statistics courses. <span class="math display">\[
+H_{0}: \beta_{1} = 0 \quad \text{vs} \quad H_{A}: \beta_{1} \neq 0
+\]</span></li>
+<li>Assumptions checked above.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table caption-top" data-quarto-postprocess="true" style="font-size: 28px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">14.117</td>
+<td style="text-align: right;">1.755</td>
+<td style="text-align: right;">8.046</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pulse</td>
+<td style="text-align: right;">-0.075</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">-3.022</td>
+<td style="text-align: right;">0.003</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(t_{stat} = -3.02\)</span> and associated <span class="math inline">\(p\text{-value} = 0.003\)</span></li>
+<li><span class="math inline">\(p\text{-value} &lt; 0.05\)</span> so we reject the null hypothesis.</li>
+<li>Therefore, we can conclude that there is a linear relationship between <code>Exercise</code> and <code>Pulse</code>.</li>
+</ul>
+</section>
+<section id="plot-of-the-model" class="slide level2">
+<h2>Plot of the Model</h2>
+<div id="qwebr-insertion-location-7"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="predicting-exercise-based-on-pulse" class="slide level2" style="font-size:80%;">
+<h2>Predicting Exercise Based on Pulse</h2>
+<ul>
+<li>What is the predicted number of hours of exercse per week for students with pulses of: 40, 50, 60, 70 bpm?</li>
+</ul>
+<div id="qwebr-insertion-location-8"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<ul>
+<li>We can also find a confidence interval for these predictions
+<ul>
+<li>This is called a <em>Prediction Interval</em></li>
+</ul></li>
+</ul>
+<ul>
+<li>How good do we think these predictions are?</li>
+</ul>
+</section>
+<section id="confidence-interval" class="slide level2">
+<h2>Confidence Interval</h2>
+<ul>
+<li>And we can construct a <em>Confidence Interval</em> for the model.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>    fit  lwr   upr
+1 11.50 9.71 13.30
+2 11.13 9.56 12.70
+3 10.38 9.25 11.52
+4  9.64 8.88 10.40</code></pre>
+</div>
+</div>
+</section>
+<section id="confidence-interval-visualization" class="slide level2">
+<h2>Confidence Interval Visualization</h2>
+<div id="qwebr-insertion-location-9"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="prediction-vs.-confidence-interval" class="slide level2">
+<h2>Prediction vs.&nbsp;Confidence Interval</h2>
+<ul>
+<li>A <em>prediction</em> interval gives a range of plausible values for observations of the response at a given value of the predictor.</li>
+<li>A <em>confidence interval</em> gives a range of values within which we expect the <em>mean</em> response value for a given value of the predictor.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<ul>
+<li>We saw that at 50bpm our <em>prediction interval</em> was: -0.491 to 21.257 .
+<ul>
+<li>We are 90% confident that the next observed value of hours of Exercise will be in the interval -0.5 to 21 hours.</li>
+</ul></li>
+<li>For 50bpm, we saw that the <em>confidence interval</em> was: 9.56 12.70
+<ul>
+<li>If we were to repeat the study repeatedly, 9 times out of 10 the confidence interval would contain the true mean value of exercise for a pulse of 50bpm.</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="stepping-it-up-a-notch-bam" class="title-slide slide level1 center">
+<h1>Stepping It Up a Notch (BAM!)</h1>
+
+</section>
+<section id="multiple-regression-model" class="slide level2">
+<h2>Multiple Regression Model</h2>
+<ul>
+<li>If we were to fit a regression model using <code>Exercise</code> again as our response and <code>Pulse</code> and <code>SAT</code> as the predictors, we would be fitting a model of the form <span class="math display">\[
+\hat{E} = \beta_{0} + \beta_{1}P + \beta_{2}S
+\]</span></li>
+</ul>
+<div id="qwebr-insertion-location-10"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="model-equation" class="slide level2">
+<h2>Model Equation</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table caption-top" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">16.323</td>
+<td style="text-align: right;">3.386</td>
+<td style="text-align: right;">4.821</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pulse</td>
+<td style="text-align: right;">-0.074</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">-2.972</td>
+<td style="text-align: right;">0.003</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SAT</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">-0.762</td>
+<td style="text-align: right;">0.447</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p><span class="math display">\[
+\hat{E} = 16.3 - 0.074P - 0.002S
+\]</span> - Based on this model, we would conclude that weekly hours of exercise is negatively correlated with a student’s pule and SAT scores. - HOWEVER, we can see that <code>SAT</code>’s <span class="math inline">\(p\)</span>-value is <em>not</em> statistically significant. - i.e., we have evidence to reject the null hypothesis that <span class="math inline">\(\beta_{2} = 0\)</span>. - Regardless - we will use it to illustrate this example.</p>
+</section>
+<section id="predict-values" class="slide level2">
+<h2>Predict Values</h2>
+<p>Based on our model, what is the predicted weekly exercise hours for the following Pulse, SAT scores: (40, 1200), (40, 1201), (41, 1200), (60, 1400)</p>
+<div id="qwebr-insertion-location-11"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>What is the difference between the second and first prediction?<br>
+What about the third and first?</p>
+<div id="qwebr-insertion-location-12"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="visualize-this-model" class="slide level2">
+<h2>Visualize This Model</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-5b74b1cffac39f40a05d" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-5b74b1cffac39f40a05d">{"x":{"visdat":{"4a11b68a866b2":["function () ","plotlyVisDat"]},"cur_data":"4a11b68a866b2","attrs":{"4a11b68a866b2":{"x":{},"y":{},"z":{},"color":["red"],"size":[50],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"},"4a11b68a866b2.1":{"x":[35,45.555555555555557,56.111111111111114,66.666666666666657,77.222222222222229,87.777777777777771,98.333333333333329,108.88888888888889,119.44444444444444,130],"y":[820,901.11111111111109,982.22222222222217,1063.3333333333333,1144.4444444444443,1225.5555555555557,1306.6666666666667,1387.7777777777778,1468.8888888888889,1550],"z":[[12.194553241886851,12.041086091134767,11.887618940382682,11.734151789630596,11.580684638878511,11.427217488126425,11.27375033737434,11.120283186622256,10.966816035870171,10.813348885118085],[11.417505455340443,11.264038304588359,11.110571153836274,10.957104003084188,10.803636852332103,10.650169701580017,10.496702550827932,10.343235400075848,10.189768249323762,10.036301098571677],[10.640457668794033,10.486990518041949,10.333523367289864,10.180056216537778,10.026589065785693,9.8731219150336074,9.7196547642815219,9.5661876135294364,9.4127204627773526,9.2592533120252671],[9.863409882247625,9.7099427314955413,9.5564755807434558,9.4030084299913703,9.2495412792392848,9.0960741284871993,8.9426069777351138,8.7891398269830283,8.6356726762309446,8.4822055254788591],[9.086362095701217,8.9328949449491333,8.7794277941970478,8.6259606434449623,8.4724934926928768,8.3190263419407913,8.1655591911887058,8.0120920404366203,7.8586248896845365,7.705157738932451],[8.309314309154809,8.1558471584027252,8.0023800076506397,7.8489128568985542,7.6954457061464687,7.5419785553943832,7.3885114046422977,7.2350442538902131,7.0815771031381285,6.928109952386043],[7.5322665226084018,7.3787993718563163,7.2253322211042317,7.0718650703521462,6.9183979196000607,6.7649307688479752,6.6114636180958897,6.4579964673438051,6.3045293165917204,6.1510621658396349],[6.755218736061992,6.6017515853099065,6.4482844345578219,6.2948172838057364,6.1413501330536509,5.9878829823015653,5.8344158315494798,5.6809486807973952,5.5274815300453106,5.3740143792932251],[5.9781709495155839,5.8247037987634984,5.6712366480114138,5.5177694972593283,5.3643023465072428,5.2108351957551573,5.0573680450030718,4.9039008942509872,4.7504337434989026,4.5969665927468171],[5.2011231629691741,5.0476560122170886,4.894188861465004,4.7407217107129185,4.587254559960833,4.4337874092087475,4.280320258456662,4.1268531077045774,3.9733859569524923,3.8199188062004072]],"color":["red"],"size":[50],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"surface","showscale":false,"colours":"blue","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Pulse"},"yaxis":{"title":"SAT"},"zaxis":{"title":"Exercise"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[54,66,130,78,40,80,94,77,60,94,63,54,66,59,88,59,64,72,74,70,58,48,74,60,74,70,74,60,55,82,68,83,53,72,86,67,89,48,64,73,80,85,60,61,80,70,61,58,88,68,68,35,90,88,67,71,68,73,55,96,73,60,80,96,49,62,68,52,71,72,77,68,60,65,84,80,66,70,70,72,69,89,79,98,48,71,67,66,66,60,77,80,70,65,57,84,56,69,62,79,55,89,78,83,58,77,50,87,74,76,50,70,84,68,66,76,65,65,68,78,74,76,79,81,56,48,68,62,70,46,88,68,74,88,67,61,62,69,59,79,56,85,69,61,95,58,57,80,69,73,62,64,86,73,71,72,84,120,77,80,80,54,54,78,72,78,69,80,76,74,70,72,60,71,70,53,70,75,84,66,72,70,49,81,77,72,60,64,65,72,54,82,82,62,52,55,63,78,65,64,70,71,54,71,54,70,65,82,63,71,75,60,54,68,70,90,72,41,80,68,78,65,64,78,42,60,59,54,70,52,88,60,66,55,74,59,84,68,74,58,62,84,72,52,68,71,55,68,61,80,66,70,78,88,72,65,63,70,72,68,64,64,60,68,70,63,57,84,74,61,78,65,68,76,54,56,88,77,52,62,80,60,51,81,62,84,75,60,76,65,65,64,75,93,75,82,80,69,85,76,76,65,67,64,71,65,83,65,77,66,62,58,48,61,50,72,74,80,90,72,64,72,70,84,87,60,80,70,78,75,42,80,72,96,95,80,74,78,72,91],"y":[1210,1150,1110,1120,1170,1150,1320,1370,1100,1370,1170,1150,1300,1200,1200,1350,1410,1000,1190,1130,1180,1200,1230,1420,1200,1150,1110,1000,1230,1260,1060,1280,1010,1140,1200,1070,1350,1140,1220,1120,1050,1040,1240,1240,1110,1320,1230,1200,1370,1320,940,980,1220,1260,1260,1010,1250,1270,1200,1200,1250,1200,1180,1300,1080,1180,1240,1310,1180,1260,1220,1140,1300,1280,1040,1280,1080,1110,1240,1100,1140,1140,1180,1480,1220,1250,1200,1250,1150,1370,1200,1250,1120,1390,1350,1370,1470,1180,1250,1260,1250,1350,1240,950,1550,1150,1100,1220,1210,1200,1140,1200,1010,1250,1120,1280,1230,850,1300,1220,1090,1320,1100,1230,1270,1110,1060,1240,1070,1150,1110,1060,1060,1200,820,1170,860,1255,1130,1078,1200,1230,1220,1230,1030,1060,1240,1240,1470,1160,1310,1320,1070,1230,1330,1250,970,1090,1350,1360,1190,1260,1350,1190,1150,1130,1220,1240,1000,1100,1250,1140,1150,1170,1200,1290,1150,1140,1380,1210,1380,1290,1100,1420,1260,1240,1100,1250,1270,1470,1390,1200,1230,1100,1240,1110,1100,1280,1200,1150,1170,1190,1260,1190,1430,1340,1380,900,1370,1060,1190,1300,1110,1250,1220,1260,1210,1340,1420,1280,1040,1540,1400,1400,1000,1250,1220,1030,1220,1400,1420,1110,1240,1200,1330,1370,1270,1040,1110,1200,1230,1530,1300,1130,1280,1330,1280,1180,1340,1240,1150,1180,1410,1250,1410,1150,1190,1240,1470,1150,1090,1140,1080,1420,920,1120,1180,1260,1260,1230,1240,1210,1220,1140,1270,1200,1170,1140,1120,1080,1040,1200,1230,1100,1310,1300,1120,1230,1400,980,1440,1310,1050,1230,1270,1260,1170,1050,1100,1350,1240,1250,1130,1170,980,1110,1360,1200,1310,1260,1180,1220,1040,1190,1150,1200,1210,1200,1250,890,1040,1140,1130,1210,1260,1150,1290,1150,1150,1090,1110,1430,1360,1320,1330,1090,1220,990,1100,1010],"z":[10,4,14,3,3,5,10,13,3,12,12,12,6,10,3,7,2,14,10,14,20,7,12,10,6,14,12,10,8,0,10,6,5,24,2,10,6,5,5,12,2,7,15,5,7,15,8,14,4,15,4,15,3,3,15,20,3,6,12,20,10,10,4,9,12,2,15,10,7,3,8,5,10,15,5,6,18,16,4,3,5,10,2,4,14,7,14,3,5,15,5,4,8,14,5,15,3,12,12,6,2,3,24,3,6,12,18,2,12,5,3,3,21,12,3,20,8,2,15,6,2,1,13,12,10,10,10,3,2,10,4,8,18,5,4,20,14,8,4,5,14,4,15,12,10,6,12,10,5,18,10,8,8,3,5,4,8,3,12,5,5,15,10,10,10,14,6,4,14,5,16,14,10,11,4,12,5,8,8,3,8,20,10,3,4,8,14,14,12,6,3,12,5,8,1,7,5,10,12,15,7,15,10,15,12,10,12,5,14,3,12,15,3,25,5,6,27,8,3,17,5,0,27,3,3,11,2,9,12,15,2,20,12,5,10,2,12,5,3,12,8,8,5,6,10,18,12,10,10,5,7,3,7,3,4,8,7,7,3,14,5,14,5,5,2,1,15,5,5,15,5,20,3,7,20,10,6,6,10,9,1.5,20,21,10,8,10,18,15,8,6,12,10,7,5,6,5,5,30,5,12,0,12,0,15,18,12,2,12,3,3,4,12,25,3,6,7,7,6,6,13,25,8,5,11,18,6,2,5,5,6,10,4,5,17,7,2,8,1,14,12],"type":"scatter3d","mode":"markers","marker":{"color":"rgba(255,0,0,1)","size":[50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50],"sizemode":"area","line":{"color":"rgba(255,0,0,1)"}},"textfont":{"color":"rgba(255,0,0,1)","size":50},"error_y":{"color":"rgba(255,0,0,1)","width":50},"error_x":{"color":"rgba(255,0,0,1)","width":50},"line":{"color":"rgba(255,0,0,1)","width":50},"frame":null},{"x":[35,45.555555555555557,56.111111111111114,66.666666666666657,77.222222222222229,87.777777777777771,98.333333333333329,108.88888888888889,119.44444444444444,130],"y":[820,901.11111111111109,982.22222222222217,1063.3333333333333,1144.4444444444443,1225.5555555555557,1306.6666666666667,1387.7777777777778,1468.8888888888889,1550],"z":[[12.194553241886851,12.041086091134767,11.887618940382682,11.734151789630596,11.580684638878511,11.427217488126425,11.27375033737434,11.120283186622256,10.966816035870171,10.813348885118085],[11.417505455340443,11.264038304588359,11.110571153836274,10.957104003084188,10.803636852332103,10.650169701580017,10.496702550827932,10.343235400075848,10.189768249323762,10.036301098571677],[10.640457668794033,10.486990518041949,10.333523367289864,10.180056216537778,10.026589065785693,9.8731219150336074,9.7196547642815219,9.5661876135294364,9.4127204627773526,9.2592533120252671],[9.863409882247625,9.7099427314955413,9.5564755807434558,9.4030084299913703,9.2495412792392848,9.0960741284871993,8.9426069777351138,8.7891398269830283,8.6356726762309446,8.4822055254788591],[9.086362095701217,8.9328949449491333,8.7794277941970478,8.6259606434449623,8.4724934926928768,8.3190263419407913,8.1655591911887058,8.0120920404366203,7.8586248896845365,7.705157738932451],[8.309314309154809,8.1558471584027252,8.0023800076506397,7.8489128568985542,7.6954457061464687,7.5419785553943832,7.3885114046422977,7.2350442538902131,7.0815771031381285,6.928109952386043],[7.5322665226084018,7.3787993718563163,7.2253322211042317,7.0718650703521462,6.9183979196000607,6.7649307688479752,6.6114636180958897,6.4579964673438051,6.3045293165917204,6.1510621658396349],[6.755218736061992,6.6017515853099065,6.4482844345578219,6.2948172838057364,6.1413501330536509,5.9878829823015653,5.8344158315494798,5.6809486807973952,5.5274815300453106,5.3740143792932251],[5.9781709495155839,5.8247037987634984,5.6712366480114138,5.5177694972593283,5.3643023465072428,5.2108351957551573,5.0573680450030718,4.9039008942509872,4.7504337434989026,4.5969665927468171],[5.2011231629691741,5.0476560122170886,4.894188861465004,4.7407217107129185,4.587254559960833,4.4337874092087475,4.280320258456662,4.1268531077045774,3.9733859569524923,3.8199188062004072]],"type":"surface","showscale":false,"colours":"blue","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section></section>
+<section>
+<section id="okay---onward-real-multiple-regression" class="title-slide slide level1 center">
+<h1>Okay - ONWARD – REAL Multiple Regression</h1>
+
+</section>
+<section id="one-numeric-and-one-categorical-predictor" class="slide level2">
+<h2>One Numeric and One Categorical Predictor</h2>
+<p>Let’s continue to use <code>Exercise</code> as our response with <code>Pulse</code> and <code>Grade</code> as the predictors:</p>
+<p>We can fit that model using the same syntax we’ve been using all along!</p>
+<div id="qwebr-insertion-location-13"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>The model equation is: <span class="math display">\[
+\hat{E} = 13 - 0.07P + 0.78G_{B} + 1.76G_{C}
+\]</span></p>
+</section>
+<section id="multiple-regression-meaning" class="slide level2">
+<h2>Multiple Regression Meaning</h2>
+<p><span class="math display">\[
+\hat{E} = 13 - 0.07P + 0.78G_{B} + 1.76G_{C}
+\]</span></p>
+</section>
+<section id="predicting-with-the-model" class="slide level2">
+<h2>Predicting with the Model</h2>
+<p><span class="math display">\[
+\hat{E} = 13 - 0.07P + 0.78G_{B} + 1.76G_{C}
+\]</span></p>
+<p>Find the predicted weekly hours of exercise for (Pulse, Grade) pairs: (40, A), (40, B), (40, C), (41, A), (41, B), (41, C)</p>
+<div id="qwebr-insertion-location-14"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table caption-top" data-quarto-postprocess="true" style="font-size: 18px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">13.074</td>
+<td style="text-align: right;">2.081</td>
+<td style="text-align: right;">6.281</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pulse</td>
+<td style="text-align: right;">-0.071</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">-2.874</td>
+<td style="text-align: right;">0.004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GradeB</td>
+<td style="text-align: right;">0.778</td>
+<td style="text-align: right;">1.076</td>
+<td style="text-align: right;">0.722</td>
+<td style="text-align: right;">0.471</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GradeC</td>
+<td style="text-align: right;">1.763</td>
+<td style="text-align: right;">1.380</td>
+<td style="text-align: right;">1.278</td>
+<td style="text-align: right;">0.202</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="visualizing-this-model" class="slide level2">
+<h2>Visualizing this Model</h2>
+
+<img data-src="1052-lecture11-LM_multiple_regression_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section></section>
+<section>
+<section id="full-model-time" class="title-slide slide level1 center">
+<h1>FULL MODEL TIME</h1>
+
+</section>
+<section id="fit-the-full-model" class="slide level2">
+<h2>2. Fit the Full Model</h2>
+<p>A <strong>full model</strong> is one where we include all variables that we are given.</p>
+<p>We fit the model using <code>lm()</code> and “adding” (<code>+</code>) each variable as a predictor on the right-hand-side of <code>~</code> in the formula.</p>
+<div id="qwebr-insertion-location-15"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>We would now examine the output of the model using <code>tidy()</code> and <code>glance()</code>:</p>
+<ul>
+<li><code>tidy()</code> outputs the coefficient matrix;</li>
+<li><code>glance()</code> provides the “overall model” details like <span class="math inline">\(R^{2}\)</span> and the residual standard error.</li>
+</ul>
+</section>
+<section id="model-summaries" class="slide level2">
+<h2>Model Summaries</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table caption-top" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">12.785</td>
+<td style="text-align: right;">3.964</td>
+<td style="text-align: right;">3.225</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SAT</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">-0.627</td>
+<td style="text-align: right;">0.531</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GradeB</td>
+<td style="text-align: right;">0.191</td>
+<td style="text-align: right;">1.107</td>
+<td style="text-align: right;">0.173</td>
+<td style="text-align: right;">0.863</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GradeC</td>
+<td style="text-align: right;">0.831</td>
+<td style="text-align: right;">1.462</td>
+<td style="text-align: right;">0.568</td>
+<td style="text-align: right;">0.570</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pulse</td>
+<td style="text-align: right;">-0.062</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">-2.486</td>
+<td style="text-align: right;">0.013</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Piercings</td>
+<td style="text-align: right;">0.439</td>
+<td style="text-align: right;">0.202</td>
+<td style="text-align: right;">2.169</td>
+<td style="text-align: right;">0.031</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SexMale</td>
+<td style="text-align: right;">2.703</td>
+<td style="text-align: right;">0.903</td>
+<td style="text-align: right;">2.995</td>
+<td style="text-align: right;">0.003</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="cell-output-display">
+<table class="table caption-top" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.0570353</td>
+<td style="text-align: right;">5.451</td>
+<td style="text-align: right;">0.003</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="check-model-assumptions" class="slide level2">
+<h2>3. Check Model Assumptions</h2>
+<p>Here we use the model diagnostic plots which we can create using the <code>autoplot()</code> function from the <code>ggfortify</code> package.</p>
+
+<img data-src="1052-lecture11-LM_multiple_regression_files/figure-revealjs/model-diagnostic-plots-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="discussion-of-model-assumptions" class="slide level2">
+<h2>Discussion of Model Assumptions</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1052-lecture11-LM_multiple_regression_files/figure-revealjs/full-model-diagnostics-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p><br></p>
+<p><strong>Comments</strong>:</p>
+<ul>
+<li><strong>Resid vs.&nbsp;Fit</strong>: Linearity looks good.</li>
+<li><strong>QQ-Plot</strong>: Definte right-skew.</li>
+<li><strong>Scale-Location</strong>: Some non-equal variance</li>
+</ul>
+</div></div>
+<p>Overall - given the sample size, this is just fine ’n dandy!</p>
+</section>
+<section id="hypothesis-testing-and-model-selection" class="slide level2">
+<h2>4. Hypothesis Testing and Model Selection</h2>
+<p>Here is where we can remove some of the variables if they don’t seem to be associated with the response variable (<code>Exercise</code>).</p>
+<p>There are many ways to do this, but one common approach is to use a stepwise regression method.</p>
+<p>The most straightforward method is to use <em>Backward Elimination</em>:</p>
+<ul>
+<li>Fit the full model;</li>
+<li>Remove the variable that has the highest p-value above a given significance level;</li>
+<li>Repeat until all variables left in the model have a p-value below the significance level.</li>
+</ul>
+</section>
+<section id="backwards-elimination-p-value-approach" class="slide level2">
+<h2>Backwards Elimination (<span class="math inline">\(p\)</span>-Value approach)</h2>
+<div id="qwebr-insertion-location-16"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="step-function-in-r" class="slide level2">
+<h2><code>step()</code> Function in R</h2>
+<p>The <code>step()</code> function in R is used to perform stepwise regression. It can be used with both <em>Forward Selection</em>, <em>Backward Elimination</em>, and <em>Mixed Selection</em>.</p>
+<p>Here’s how you can use it:</p>
+<ol type="1">
+<li>Fit the full model (all variables);</li>
+<li>Fit the null model (only the intercept);</li>
+<li>Use the <code>step()</code> function with <code>direction = "both"</code> to performed “Mixed Selection” (both forward selection and backward elimination).</li>
+</ol>
+<div id="qwebr-insertion-location-17"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="using-step" class="slide level2">
+<h2>Using <code>step()</code></h2>
+<div id="qwebr-insertion-location-18"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li>Multiple regression works VERY similarly to simple linear regression.</li>
+<li>Once we get past a few predictors, visualizing things is extremely difficult, however.</li>
+<li>Variable selection is a SUPER important part of the whole process!</li>
+<li>Stepwise Regression is only <em>ONE</em> method for doing this.</li>
 </ul>
 
 </section></section>
@@ -2041,20 +2732,20 @@ Richard Boire &amp; Dave Riegert
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="1052-lecture11-wi25-new_test_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="1052-lecture11-LM_multiple_regression_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -2070,7 +2761,7 @@ Richard Boire &amp; Dave Riegert
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true,"chalkEffect":0.2,"chalkWidth":5,"src":"chalkboard-new_test.json"},
+'chalkboard': {"buttons":true,"chalkEffect":0.2,"chalkWidth":5},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -2216,17 +2907,12 @@ Richard Boire &amp; Dave Riegert
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1200,
+        width: 1050,
 
-        height: 800,
+        height: 700,
 
         // Factor of the display size that should remain empty around the content
         margin: 5.0e-2,
-
-        // Bounds for smallest/largest possible scale to apply to content
-        minScale: 1,
-
-        maxScale: 1,
 
         math: {
           mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
@@ -2255,6 +2941,44 @@ Richard Boire &amp; Dave Riegert
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

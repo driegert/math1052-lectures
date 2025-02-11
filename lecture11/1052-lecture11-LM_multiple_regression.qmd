@@ -1,0 +1,819 @@
+---
+title: "Lecture 11 - Multiple Linear Regression"
+subtitle: "MATH 1052"
+author: "Richard Boire & Dave Riegert"
+institute: "Trent University"
+execute: 
+  echo: false
+format:
+  revealjs:
+    # width: 1200
+    # height: 800
+    # min-scale: 1
+    # max-scale: 1
+    theme: default
+    margin: 0.05
+    incremental: false
+    logo: TUPMS.png
+    css: style.css
+    pdf-separate-fragments: false
+    auto-stretch: true
+    chalkboard:
+      # plugins:
+      #   - RevealChalkboard
+      chalk-effect: 0.2
+      chalk-width: 5
+      # src: chalkboard-new_test.json
+    multiplex: false
+filters:
+  - webr
+webr:
+  packages: ["tibble", "ggplot2", "tidyverse", "ggfortify", "janitor", "broom", "Lock5Data"]
+slide-number: true
+smaller: false
+---
+
+## Slide Contents
+
+<script type="text/x-mathjax-config"> 
+    MathJax.Hub.Config({ 
+        "HTML-CSS": { scale: 85, linebreaks: { automatic: true } }, 
+        SVG: { linebreaks: { automatic:true } }, 
+        displayAlign: "center" });
+</script>
+
+- factor variables
+    - what to watch out for!
+- linear regression with a categorical predictor
+    - simple example - two categories;
+    - more involved example - MOAR categories;
+
+# Many Predictors
+
+```{r}
+#| include: false
+
+library(tidyverse)
+library(broom)
+library(ggfortify)
+library(janitor)
+library(knitr)
+library(kableExtra)
+library(GGally)
+library(plotly)
+
+theme_set(theme_bw())
+```
+
+## The Data
+
+> A first day survey over several different introductory statistics classes.
+
+- `SAT`: Combined SAT scores (out of 1600)
+- `Exercise`: Hours of exercise (per week)
+- `GPA`: Grade Point Average (letter grade)
+- `Pulse`: Pulse rate (beats per minute)
+- `Piercings`: Number of body piercings
+- `CodedSex`: 0=female or 1=male
+
+We want to understand whether any of these factors are associated with 
+the amount of exercise per week.
+
+This means that `Exercise` is going to be our response variable.
+
+## 0. Look at the CSV File {style="font-size:90%;"}
+
+First we'd look at the .csv file to see if there is anything that 
+jumps out or anything we should be watching out for when working with this data.
+
+Next, we read in the data and examine the columns:
+
+```{webr-r}
+#| autorun: true
+#| echo: false
+
+webr::install("Lock5Data")
+data("GPAbySex", package = "Lock5Data")
+gpa <- GPAbySex
+gpa2 <- gpa %>%
+  mutate(GPA = cut(GPA, breaks = c(0, 1, 1.3, 1.7, 2.0, 2.3, 
+                   2.7, 3.0, 3.3, 3.7, 4.0, 4.00001) - 0.00001, 
+         labels = c("F", "D", "D+", "C-", "C", "C+", "B-", "B", "B+",
+                   "A-", "A/A+")))
+
+survey_raw <- gpa2 %>% na.omit() %>% 
+  mutate(Grade = substr(GPA, start = 1, stop = 1)) %>% 
+  mutate(Sex = ifelse(CodedSex == 0, "Female", "Male"))
+```
+
+```{r}
+#| label: read-in-survery-data
+#| eval: true
+
+survey_raw <- read_csv("gpa-exercise_target.csv", show_col_types = FALSE)
+```
+
+## Glimpse
+
+```{webr-r}
+# glimpse
+```
+
+
+## 0. Prepare the Data {style="font-size:90%;"}
+
+```{r}
+#| label: factor-variables
+
+survey <- survey_raw %>% 
+  mutate(Grade = factor(Grade, levels = c("A", "B", "C", "D", "F"))) %>% 
+  mutate(Sex = factor(Sex))
+```
+
+```{webr-r}
+#| label: factor-variables
+
+survey <- survey_raw %>% 
+  mutate(Grade = factor(Grade, levels = c("A", "B", "C", "D", "F"))) %>% 
+  mutate(Sex = factor(Sex))
+```
+
+
+## 1. Explore the Data
+
+- We can use the `count()` and `summarize()` functions to help with the 
+numerical summaries.
+- `ggpairs`, scatterplots, barplots, histograms, etc. to visualize the data.
+
+## 1. EDA -- `count()`
+
+- `count()` is a function that counts the number of times a unique value 
+is observed in a column.
+- Almost _always_ used to examine categorical variables.
+
+:::: {.columns}
+
+:::{.column width="48%"}
+```{r}
+#| label: count-grade
+#| include: false
+#| eval: false
+
+survey %>% 
+  count(Grade) %>% kable()
+```
+
+```{webr-r}
+#| label: count-grade
+
+survey %>% 
+  count(Grade) %>% kable()
+```
+:::
+
+::: {.column width="48%"}
+
+```{r}
+#| label: count-sex
+#| include: false
+#| eval: false
+
+survey %>% 
+  count(Sex) %>% kable()
+```
+
+```{webr-r}
+#| label: count-sex
+
+survey %>% 
+  count(Sex) %>% kable()
+```
+:::
+
+::::
+
+## 1. EDA -- `count()` - Sex and Grade
+
+```{webr-r}
+
+```
+
+## 1. EDA -- `summarize()` {style="font-size:90%;"}
+
+- Summarize lets us calculate numerical statistics for columns.
+- _Typically_ we would use `summarize()` with numeric variables, however 
+it also let's us "count" the number of observations using the `n()` function.
+- We can combine `summarize()` with `group_by()` in order to calculate the 
+numerical statistics for each column, separated by level of the `group_by()` 
+variable(s).
+
+A straight forward use of `summarize()` would be:
+
+```{r}
+#| label: simple-summarize
+
+survey %>% summarize(
+  `Mean Exercise` = mean(Exercise), 
+  `Mean SAT`  = mean(SAT),
+  `Mean Pulse` = mean(Pulse),
+  `Mean Piercings` = mean(Piercings),
+  `n` = n()
+) %>% adorn_rounding(1) %>% kable()
+```
+
+## 1. Eda -- `summarize()`, `group_by()` {style="font-size:90%;"}
+
+A more interesting table:
+
+```{r}
+#| label: summarize-group-by-grade
+
+survey %>%
+  group_by(Grade) %>%
+  summarize(
+    `Mean Exercise` = mean(Exercise),
+    `Mean SAT` = mean(SAT),
+    `Mean Pulse` = mean(Pulse),
+    `Mean Piercings` = mean(Piercings),
+    `n` = n()
+  ) %>% adorn_rounding(1) %>%
+  kable()
+```
+
+## 1. EDA -- `ggpairs()` {style="font-size:80%;"}
+
+```{r}
+#| label: pairs-plot
+#| fig-align: center
+#| cache: true
+
+survey %>% 
+  ggpairs(lower = list(combo = wrap("facethist", bins = 15)), progress = FALSE)
+```
+
+## Reflection
+
+Do we think that there are any relationships here between `Exercise` and 
+the other variables?
+
+- Exercise and SAT:
+
+<p>
+
+- Exercise and Pulse: 
+
+<p>
+
+- Exercise and Piercings: 
+
+<p>
+
+- Exercise and Grade: 
+
+<p>
+
+- Exercise and Sex: 
+
+# Fitting the Model: Detour
+
+## Back in Time: SLR
+
+- Simple linear regression (SLR) is used to quantify the relationship between 
+two numeric variables.
+- We are fitting a model that has the form:
+$$
+\hat{y} = \beta_{0} + \beta_{1}x
+$$ {#eq-slr-true}
+- The parameters that we are estimating are the $\beta$'s (aka, the model 
+coefficients).
+- Once we estimate the coefficients, we have a model of the form
+$$
+\hat{y} = b_{0} + b_{1}x
+$$ {#eq-slr-fit}
+- @eq-slr-fit is the: fitted model equation, fitted model, model equation, 
+line of best fit, regression model, etc.
+
+## SLR: Exercise and Pulse
+
+- Let's fit a model between `Exercise` and `Pulse`.
+
+```{r}
+#| label: slr-exercise-pulse
+
+mod_slr <- survey %>% lm(Exercise ~ Pulse, data = .) 
+mod_slr %>% tidy() %>% adorn_rounding(4) %>% 
+  kable() %>% kable_styling(font_size=28)
+```
+
+and our model equation is:
+
+$$
+\hat{E} = 14.1 - 0.075P 
+$$
+
+- $\hat{E}$ is the expected amount of exercise (hours per week); and 
+- $P$ is the pulse rate (beats per minute).
+
+## Check Model Diagnostics  {style="font-size:90%;"}
+
+:::: {.columns}
+:::{.column width="60%"}
+```{r}
+#| label: slr-model-diagnostics
+#| fig-align: center
+#| fig-height: 6
+mod_slr %>% autoplot()
+```
+
+:::
+::: {.column width="40%"}
+<br>
+
+**Comments**:
+
+- **Resid vs. Fit**: Some nonlinearity, but small number of observations
+- **QQ-Plot**: A bit right-skewed
+- **Scale-Location**: Some non-constant variance
+
+:::
+::::
+
+Overall, these seem okay.
+
+## Full Hypothesis Test {style="font-size:90%;"}
+
+- Is there a linear relationship between `Exercise` and `Pulse` ?
+- Let $\beta_{1}$ be the average change between `Pulse` and `Exercise` for 
+all students in introductory statistics courses.
+$$
+H_{0}: \beta_{1} = 0 \quad \text{vs} \quad H_{A}: \beta_{1} \neq 0
+$$
+- Assumptions checked above.
+
+```{r}
+#| echo: false
+
+mod_slr %>% tidy() %>% 
+  adorn_rounding(3) %>% 
+  kable() %>% kable_styling(font_size = 28)
+```
+- $t_{stat} = -3.02$ and associated $p\text{-value} = 0.003$
+- $p\text{-value} < 0.05$ so we reject the null hypothesis.
+- Therefore, we can conclude that there is a linear relationship between 
+`Exercise` and `Pulse`. 
+
+## Plot of the Model
+
+```{r}
+#| label: plot-slr
+#| include: false
+#| eval: false
+
+survey %>% ggplot(aes(x = Pulse, y = Exercise)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  labs(title = "Exercise vs Pulse", x = "Pulse (bpm)", 
+       y = "Exercise (hours/week)")
+  
+```
+
+```{webr-r}
+#| label: plot-slr
+
+survey %>% ggplot(aes(x = Pulse, y = Exercise)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  labs(title = "Exercise vs Pulse", x = "Pulse (bpm)", 
+       y = "Exercise (hours/week)")
+  
+```
+
+## Predicting Exercise Based on Pulse {style="font-size:80%;"}
+
+- What is the predicted number of hours of exercse per week for students 
+with pulses of: 40, 50, 60, 70 bpm?
+
+```{webr-r}
+#| label: predict-exercise
+
+new_dat <- data.frame(Pulse = c(40, 50, 60, 70))
+
+```
+- We can also find a confidence interval for these predictions
+    - This is called a _Prediction Interval_
+    
+```{r}
+#| label: prediction-interval
+
+new_dat2 <- data.frame(Pulse = c(40, 50, 60, 70))
+
+```
+
+- How good do we think these predictions are?
+
+## Confidence Interval
+
+- And we can construct a _Confidence Interval_ for the model.
+
+```{r}
+#| label: slr-confidence-interval
+#| fig-align: center
+
+mod_slr %>% predict(newdata = data.frame(Pulse = c(35, 40, 50, 60)), 
+                    interval = "confidence") %>% round(2)
+```
+
+## Confidence Interval Visualization
+
+```{r}
+#| label: slr-ci-plot
+#| include: false
+#| eval: false
+
+survey %>% ggplot(aes(x = Pulse, y = Exercise)) + geom_point() + 
+  geom_smooth(method = "lm", formula = y ~ x, level = 0.99)
+```
+
+```{webr-r}
+#| label: slr-ci-plot
+
+survey %>% ggplot(aes(x = Pulse, y = Exercise)) + geom_point() + 
+  geom_smooth(method = "lm", formula = y ~ x, level = 0.99)
+```
+
+## Prediction vs. Confidence Interval
+
+- A _prediction_ interval gives a range of plausible values for observations 
+of the response at a given value of the predictor.
+- A _confidence interval_ gives a range of values within which we expect 
+the _mean_ response value for a given value of the predictor.
+
+**Example**:
+
+- We saw that at 50bpm our _prediction interval_ was: -0.491 to 21.257 .
+    - We are 90\% confident that the next observed value of hours of Exercise 
+    will be in the interval -0.5 to 21 hours.
+- For 50bpm, we saw that the _confidence interval_ was: 9.56 12.70
+    - If we were to repeat the study repeatedly, 9 times out of 10 the 
+    confidence interval would contain the true mean value of exercise 
+    for a pulse of 50bpm.
+
+# Stepping It Up a Notch (BAM!)
+
+## Multiple Regression Model
+
+- If we were to fit a regression model using `Exercise` again as our 
+response and `Pulse` and `SAT` as the predictors, we would be fitting a 
+model of the form
+$$
+\hat{E} = \beta_{0} + \beta_{1}P + \beta_{2}S
+$$
+
+```{r}
+#| label: fit-two-numeric
+#| include: false
+#| eval: false
+
+mod_2num <- survey %>% lm(Exercise ~ Pulse + SAT, data = .)
+mod_2num %>% tidy() %>% adorn_rounding(3) %>% 
+  kable() %>% kable_styling(font_size = 28)
+```
+
+```{webr-r}
+#| label: fit-two-numeric
+
+mod_2num <- survey %>% lm(Exercise ~ Pulse + SAT, data = .)
+mod_2num %>% tidy() %>% adorn_rounding(3) %>% 
+  kable() %>% kable_styling(font_size = 28)
+```
+
+## Model Equation
+
+```{r}
+#| echo: false
+
+mod_2num <- survey %>% lm(Exercise ~ Pulse + SAT, data = .)
+mod_2num %>% tidy() %>% adorn_rounding(3) %>% 
+  kable() %>% kable_styling(font_size = 24)
+```
+$$
+\hat{E} = 16.3 - 0.074P - 0.002S
+$$
+- Based on this model, we would conclude that weekly hours of exercise is 
+negatively correlated with a student's pule and SAT scores.
+- HOWEVER, we can see that `SAT`'s $p$-value is _not_ statistically significant.
+    - i.e., we have evidence to reject the null hypothesis that $\beta_{2} = 0$.
+    - Regardless - we will use it to illustrate this example.
+
+## Predict Values
+
+Based on our model, what is the predicted weekly exercise hours for the 
+following Pulse, SAT scores: (40, 1200), (40, 1201), (41, 1200), (60, 1400)
+
+```{r}
+#| label: predict-exercise-pulse-sat
+#| include: false
+#| eval: false
+
+mod_2num %>% predict(newdata = tibble(Pulse = c(40, 40, 41, 60), 
+                                      SAT = c(1200, 1201, 1200, 1400))) %>% 
+  round(4)
+```
+
+```{webr-r}
+#| label: predict-exercise-pulse-sat
+
+new_dat3 <- tibble(Pulse = c(40, 40, 41, 60), SAT = c(1200, 1201, 1200, 1400))
+
+```
+
+What is the difference between the second and first prediction?  
+What about the third and first?
+
+```{webr-r}
+
+```
+
+## Visualize This Model
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+new_pulse_sat <- expand.grid(Pulse = seq(min(survey$Pulse), 
+                                         max(survey$Pulse), len = 10), 
+                             SAT = seq(min(survey$SAT), 
+                                       max(survey$SAT), len = 10))
+new_pulse_sat$Exercise_pred <- predict(mod_2num, newdata = new_pulse_sat)
+
+plane_df <- pivot_wider(
+  new_pulse_sat, 
+  names_from = SAT, 
+  values_from = Exercise_pred
+)
+
+# Create a 3D scatter plot using plotly
+p <- plot_ly(survey, x = ~Pulse, y = ~SAT, z = ~Exercise, 
+             type = "scatter3d", color = I("red"), size = I(50))
+
+gg_plane <- add_surface(p, 
+                        x = unique(new_pulse_sat$Pulse), 
+                        y = unique(new_pulse_sat$SAT), z = as.matrix(plane_df[, -1]), 
+                        showscale = FALSE, colours = c("blue"))
+
+gg_plane
+```
+
+# Okay - ONWARD -- REAL Multiple Regression
+
+## One Numeric and One Categorical Predictor
+
+Let's continue to use `Exercise` as our response with `Pulse` and `Grade` as 
+the predictors:
+
+We can fit that model using the same syntax we've been using all along!
+
+```{r}
+#| label: mr-pulse-grade
+#| include: false
+#| eval: false
+
+mod_2mr <- survey %>% lm(Exercise ~ Pulse + Grade, data = .)
+mod_2mr %>% tidy() %>% adorn_rounding(3) %>% 
+  kable() %>% kable_styling(font_size = 24)
+```
+
+```{webr-r}
+#| label: mr-pulse-grade
+
+mod_2mr <- survey %>% lm(Exercise ~ Pulse + Grade, data = .)
+mod_2mr %>% tidy() %>% adorn_rounding(3) %>% 
+  kable() %>% kable_styling(font_size = 24)
+```
+
+The model equation is:
+$$
+\hat{E} = 13 - 0.07P + 0.78G_{B} + 1.76G_{C}
+$$
+
+## Multiple Regression Meaning
+
+$$
+\hat{E} = 13 - 0.07P + 0.78G_{B} + 1.76G_{C}
+$$
+
+## Predicting with the Model
+
+$$
+\hat{E} = 13 - 0.07P + 0.78G_{B} + 1.76G_{C}
+$$
+
+Find the predicted weekly hours of exercise for (Pulse, Grade) pairs: 
+(40, A), (40, B), (40, C), (41, A), (41, B), (41, C)
+
+```{r}
+#| include: false
+#| eval: false
+new_dat <- tibble(Pulse = rep(c(40, 41), each = 3), 
+                  Grade = rep(c("A", "B", "C"), 2))
+mod_2mr %>% predict(newdata = new_dat) %>% round(3)
+```
+
+```{webr-r}
+new_dat <- tibble(Pulse = rep(c(40, 41), each = 3), 
+                  Grade = rep(c("A", "B", "C"), 2))
+mod_2mr %>% predict(newdata = new_dat) %>% round(3)
+```
+
+```{r}
+#| echo: false
+
+mod_2mr <- survey %>% lm(Exercise ~ Pulse + Grade, data = .)
+mod_2mr %>% tidy() %>% adorn_rounding(3) %>% 
+  kable() %>% kable_styling(font_size = 18)
+```
+
+## Visualizing this Model
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+# Extract coefficients
+coefficients <- coef(mod_2mr)
+slope <- coefficients["Pulse"]
+intercepts <- c(
+  A = coefficients["(Intercept)"],
+  B = coefficients["GradeB"] + coefficients["(Intercept)"],
+  C = coefficients["GradeC"] + coefficients["(Intercept)"]
+)
+
+# Create a data frame for the lines
+lines_df <- data.frame(
+  intercept = as.numeric(intercepts),
+  slope = rep(slope, length(intercepts)),
+  Grade = c("A", "B", "C")
+)
+
+# Plot the scatter points and parallel regression lines
+ggplot(survey, aes(x = Pulse, y = Exercise, color = Grade)) +
+  geom_point() + # Add scatter points
+  geom_abline(
+    data = lines_df,
+    mapping = aes(intercept = intercept, slope = slope, linetype = Grade),
+    show.legend = TRUE
+  ) +
+  labs(title = "Scatterplot with Parallel Regression Lines by Grade",
+       x = "Pulse",
+       y = "Exercise") +
+  theme_minimal() +
+  scale_color_manual(values = c("A" = "steelblue", "B" = "indianred", "C" = "forestgreen"))  
+  # scale_linetype_manual(values = c("A" = "skyblue", "B" = "pink", "C" = "lightgreen"))
+```
+
+# FULL MODEL TIME
+
+## 2. Fit the Full Model
+
+A **full model** is one where we include all variables that we are given.
+
+We fit the model using `lm()` and "adding" (`+`) each variable as a 
+predictor on the right-hand-side of `~` in the formula.
+
+```{webr-r}
+#| label: full-model-fit
+
+mod_full <- survey %>% lm(Exercise ~ SAT + Grade + 
+  Pulse + Piercings + Sex, data = .)
+```
+
+```{r}
+#| label: full-model-fit
+#| include: false
+
+mod_full <- survey %>% lm(Exercise ~ SAT + Grade + 
+  Pulse + Piercings + Sex, data = .)
+```
+
+We would now examine the output of the model using `tidy()` and `glance()`:
+
+- `tidy()` outputs the coefficient matrix;
+- `glance()` provides the "overall model" details like $R^{2}$ and the 
+residual standard error.
+
+## Model Summaries
+
+```{r}
+#| label: model-summaries
+
+mod_full %>% tidy() %>% adorn_rounding(3) %>% 
+  kable() %>% kable_styling(font_size = 24)
+mod_full %>% glance() %>% select(r.squared, sigma, p.value) %>% 
+  adorn_rounding(3) %>% 
+  kable() %>% kable_styling(font_size = 24)
+  
+```
+
+## 3. Check Model Assumptions
+
+Here we use the model diagnostic plots which we can create using the 
+`autoplot()` function from the `ggfortify` package.
+
+
+```{r}
+#| label: model-diagnostic-plots
+#| fig-align: center
+#| fig-height: 4
+
+mod_full %>% autoplot()
+```
+
+## Discussion of Model Assumptions
+
+:::: {.columns}
+:::{.column width="60%"}
+```{r}
+#| label: full-model-diagnostics
+#| fig-align: center
+#| fig-height: 6
+mod_full %>% autoplot()
+```
+
+:::
+::: {.column width="40%"}
+<br>
+
+**Comments**:
+
+- **Resid vs. Fit**: Linearity looks good.
+- **QQ-Plot**: Definte right-skew.
+- **Scale-Location**: Some non-equal variance
+
+:::
+::::
+
+Overall - given the sample size, this is just fine 'n dandy!
+
+## 4. Hypothesis Testing and Model Selection
+
+Here is where we can remove some of the variables if they don't seem to 
+be associated with the response variable (`Exercise`).
+
+There are many ways to do this, but one common approach is to use a stepwise regression method.
+
+The most straightforward method is to use _Backward Elimination_:
+
+- Fit the full model;
+- Remove the variable that has the highest p-value above a given 
+significance level;
+- Repeat until all variables left in the model have a p-value below the 
+significance level.
+
+## Backwards Elimination ($p$-Value approach)
+
+```{webr-r}
+#| label: p-value-model-selection
+
+## stuff here
+```
+
+
+## `step()` Function in R
+
+The `step()` function in R is used to perform stepwise regression. It can be used with both _Forward Selection_, _Backward Elimination_, and _Mixed Selection_.
+
+Here's how you can use it:
+
+1. Fit the full model (all variables);
+2. Fit the null model (only the intercept);
+3. Use the `step()` function with `direction = "both"` to performed 
+"Mixed Selection" (both forward selection and backward elimination).
+
+```{webr-r}
+#| label: setup-step-models
+
+# we have the full model already
+
+```
+
+
+## Using `step()`
+
+```{webr-r}
+#| label: step-function-call
+
+mod_step <- step(mod_null, scope = list(lower = mod_null, upper = mod_full), 
+                 trace = 0)
+
+mod_step %>% tidy() %>% adorn_rounding(4) %>% 
+  kable() %>% kable_styling(font_size = 24)
+```
+
+## Summary
+
+- Multiple regression works VERY similarly to simple linear regression.
+- Once we get past a few predictors, visualizing things is extremely 
+difficult, however.
+- Variable selection is a SUPER important part of the whole process!
+- Stepwise Regression is only _ONE_ method for doing this.
