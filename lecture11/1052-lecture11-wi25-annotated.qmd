@@ -17,9 +17,9 @@ format:
     chalkboard:
       chalk-effect: 0.2
       chalk-width: 5
-      src: chalkboard.json
+      # src: chalkboard.json
       printNotes: true
-    multiplex: false
+    multiplex: true
 filters:
   - webr
 webr:
