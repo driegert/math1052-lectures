@@ -1,0 +1,107 @@
+---
+title: "Lecture 11 - Multiple Linear Regression"
+subtitle: "MATH 1052"
+author: "Richard Boire & Dave Riegert"
+institute: "Trent University"
+execute: 
+  echo: true
+format:
+  revealjs:
+    # width: 1200
+    # height: 800
+    # min-scale: 1
+    # max-scale: 1
+    theme: default
+    margin: 0.05
+    incremental: false
+    logo: TUPMS.png
+    css: style.css
+    pdf-separate-fragments: false
+    auto-stretch: true
+    chalkboard:
+      # plugins:
+      #   - RevealChalkboard
+      chalk-effect: 0.2
+      chalk-width: 5
+      # src: chalkboard-new_test.json
+    multiplex: false
+filters:
+  - webr
+webr:
+  packages: ["tibble", "ggplot2"]
+slide-number: true
+smaller: false
+---
+
+# A title
+```{webr-r}
+#| include: false
+
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+library(ggfortify)
+library(janitor)
+library(broom)
+
+theme_set(theme_bw())
+```
+
+<!-- <script type="text/x-mathjax-config"> 
+    MathJax.Hub.Config({ 
+        "HTML-CSS": { scale: 85, linebreaks: { automatic: true } }, 
+        SVG: { linebreaks: { automatic:true } }, 
+        displayAlign: "center" });
+</script> -->
+
+## Drawing on this slide
+
+There is some stuff on this slide... 
+
+$$
+\hat{y} = mx + b
+$$
+
+- and then a list
+- because lists are great
+- and better
+- and even more betterer
+
+## A Slide Title
+
+```{webr-r}
+# stuff
+#| context: setup
+#| autorun: true
+set.seed(1234)
+```
+
+```{webr-r}
+# stuff
+#| autorun: true
+
+atib <- tibble(x = rnorm(10), y = 2 + 4*x + rnorm(10))
+atib %>% ggplot(aes(x = x, y = y)) + 
+  geom_point()
+```
+
+## A second slide
+
+
+```{webr-r}
+# stuff
+#| autorun: true
+
+atib %>% ggplot(aes(x = x)) + 
+  geom_histogram(colour = "white", bins = 4)
+```
+
+## More Drawing Here
+
+- item one
+- item two
+- item three
+- 90 degrees
+- 180 degrees
+- 270 degrees
+- 360 degrees
