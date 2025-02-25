@@ -1,10 +1,5 @@
-# math1052-lectures
+# MATH 1052 Interactive Lectures
 
-[Lecture 11](./lecture11/1052-lecture11-wi25.html) -- [Lecture 11 Annotated](./lecture11/1052-lecture11-wi25-annotated.html)
+Tuesday, February 11: [Lecture 11 - Multiple Regression](./lectures/1052-lecture11-LM_multiple_regression.html)
 
-[NEW - Lecture 11 - Test](./lecture11/1052-lecture11-wi25-new_test.html)
-
-[BEST Lecture 11](./lecture11/1052-lecture11-LM_multiple_regression.html)
-
-
-[Scaling Testing](./lecture11/super_test.html)
+Tuesday, February 25: [Lecture 13 - Inference for Means](./lectures/1052-lecture13-mean_tests.html)

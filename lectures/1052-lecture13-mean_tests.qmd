@@ -1,0 +1,1424 @@
+---
+title: "Lecture 13 - Inference for Means"
+subtitle: "MATH 1052"
+author: "Richard Boire & Dave Riegert"
+institute: "Trent University"
+execute: 
+  echo: true
+format:
+  revealjs:
+    theme: default
+    margin: 0.05
+    incremental: false
+    logo: TUPMS.png
+    css: style.css
+    pdf-separate-fragments: false
+    auto-stretch: true
+    chalkboard:
+      chalk-effect: 0.2
+      chalk-width: 5
+    multiplex: false
+filters:
+  - webr
+webr:
+  packages: ["infer", "dplyr", "tidyr", "ggplot2", "patchwork", "tidyselect"]
+slide-number: true
+smaller: false
+---
+
+## Slide Contents
+
+I am going to introduce the function `t_test()` from the `infer` package 
+that we are going to use instead of `t.test()`.
+
+Both will produce the same results, so if you feel strongly, you can 
+continue to use `t.test()`, however, the benefit with using 
+`t_test()` is that the syntax is consistent with the other functions 
+in the `infer` package.
+
+## Slide Contents {style="font-size:90%;"}
+
+<script type="text/x-mathjax-config"> 
+    MathJax.Hub.Config({ 
+        "HTML-CSS": { scale: 85, linebreaks: { automatic: true } }, 
+        SVG: { linebreaks: { automatic:true } }, 
+        displayAlign: "center" });
+</script>
+
+- Single mean inference review
+    - Hypothesis testing:
+        - `t_test()` (parametric), `infer` (bootstrap)
+    - Confidence intervals:
+        - `t_test()` (parametric), `infer` (bootstrap percentile)
+- Two sample tests for means
+    - paired samples (review)
+        - Hypothesis testing: `t_test()` (parametric), `infer` (permutation test)
+        - Confidence intervals: `t_test()` (parametric), `infer` (bootstrap percentile)
+    - independent samples (**NEW**)
+        - Hypothesis testing: `t_test()` (parametric), `infer` (bootstrap $t$-test)
+        - Confidence intervals: `t_test()` (parametric), `infer` (bootstrap percentile)
+
+:::{.callout-note}
+### Two-Independent Samples
+You already know how to do this!  
+This is the _same idea_ as a test for two proportions. The only difference 
+is that we use a $t$-distribution instead of a normal distribution when 
+conducting a parametric version of the test!
+:::
+
+## Note about Bootstrap-$t$ CIs {style="font-size:85%;"}
+
+- The bootstrap-$t$ confidence interval is a more accurate estimate of the 
+population mean than the standard bootstrap confidence interval.
+- It takes into account the variability in the estimator and provides a more 
+precise estimate of the population mean.
+
+HOWEVER, the actual approach requires that we:
+
+1. Collect 10,000 (or thousands, anyway) bootstrap samples;
+2. Calculate the mean for each bootstrap sample;
+3. Compute the standard error for each bootstrap sample _using the bootstrap_;
+    - In other words, for 10,000 bootstrap estimates, we would need to 
+    bootstrap another 10,000 times. I.e., the total number of bootstrap 
+    iterations would be 10,000,000 which is computationally intensive
+    - We "cut the corner" for a single mean by just using the sample 
+    standard error instead of using the bootstrap.
+4. Calculate the $t$-statistic based on each bootstrap sample;
+5. Find the $Q^{star}$ values.
+6. Compute the confidence interval ($\bar{x} - Q^{\star}SE_{\bar{X}}$)
+
+## Readings / References for Future You
+
+If you want to read about the $t$-bootstrap and the bootstrap-$t$ (yes, 
+they are two different approaches ... ), check out:
+
+- [https://www.psychology.mcmaster.ca/bennett/boot09/confInt.pdf](https://www.psychology.mcmaster.ca/bennett/boot09/confInt.pdf) (section 2.4: "Percentile-T Method").
+- Section 7.5 of _Mathematical Statistics with Resampling and R_ (second edition) 
+by L. Chihara and T. Hesterberg is a great reference!  
+    - There is a third edition available.
+
+## Reference for Two Independent Samples
+
+- Assume we have a data frame (`df`) with two columns: `group` (categorical) 
+and `value` (numeric)
+    - `group` has two levels: `"group1"` and `"group2"`
+
+### Parametric
+
+- **HT**:  
+```r
+df %>% t_test(value ~ group, order = c("group1", "group2"), 
+              alternative = "[use HA]")`
+```
+- **CI**:
+```r
+df %>% infer(value ~ group, order = c("group1", "group2"), 
+             alternative = "two.sided", 
+             conf_level = [value between 0 and 1])
+```
+
+## Reference (cont'd) -- Nonparametric {style="font-size:90%;"}
+
+- **HT** -- _permutation test_:
+```r
+null_dist <- df %>% specify(value ~ group) %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 5000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("group1", "group2"))
+  
+obs_mean_diff <- df %>% specify(value ~ group) %>% 
+  calculate(stat = "mean diff", order = c("group1", "group2"))
+  
+p_val <- null_dist %>% get_p_value(obs_stat = obs_mean_diff, 
+                                   alternative = "[use HA]")
+```
+- **CI** -- _bootstrap percentile_:
+```r
+samp_dist <- df %>% specify(value ~ group) %>% 
+  generate(reps = 5000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("group1", "group2"))
+  
+samp_dist %>% get_ci(level = [value between 0 and 1])
+```
+
+# Reminder - Inference Steps
+
+```{r}
+#| include: false
+
+library(tidyverse)
+library(infer)
+library(broom)
+library(ggfortify)
+library(janitor)
+library(knitr)
+library(kableExtra)
+library(GGally)
+# library(plotly)
+library(patchwork)
+
+theme_set(
+  theme_bw() + 
+    theme(strip.background = element_rect(fill = "lightblue1", 
+                                          color = "black"), 
+          strip.text = element_text(face = "bold"))
+)
+```
+
+```{webr-r}
+#| context: setup
+#| autorun: true
+
+theme_set(
+  theme_bw() + 
+    theme(strip.background = element_rect(fill = "lightblue1", 
+                                          color = "black"), 
+          strip.text = element_text(face = "bold"))
+)
+```
+
+## Inference Steps
+
+::::{.columns}
+:::{.column width="50%"}
+### Hypothesis Tests
+
+1. Population and parameter
+2. Hypotheses
+3. Assumptions
+4. $p$-value
+    a. CLT: 
+        - test statistic
+        - $p$-value
+    b. `infer`:
+        - null distribution and observed statistic
+        - `get_p_value()`
+        - visualize
+5. Statistical Decision
+6. Conclusion
+:::
+
+:::{.column width="50%"}
+### Confidence Intervals
+
+1. Population and parameter
+2. Assumptions
+3. CI Endpoints
+    a. CLT: `binom.test`, `t_test`, `confint`, etc.
+    b. `infer`:
+        - sampling distribution
+        - `get_ci()`
+        - visualize (optional)
+4. Interpretation
+
+:::
+::::
+
+# Single Mean Inference - Review
+
+## Approaches {style="font-size:90%;"}
+
+### CLT Conditions
+
+- **Independence**: random sampling
+- **Normality**: aka, "large enough sample", "check for outliers and skew"
+    - QQ-plot, histogram, barplot
+
+### Hypothesis Testing
+
+- `t_test()` - CLT conditions met (_parametric test_)
+- `infer` - otherwise (_bootstrap test_)
+
+### Confidence Interval
+
+- `t_test()` - CLT conditions met (_parametric CI_)
+- `infer`
+    - _bootstrap percentile_ (bootstrapping $\bar{x}$)
+    - _bootstrap-$t$_ (bootstrapping $t_{stat}$)
+
+## Example: Video Game Hours Played
+
+```{r}
+#| label: setup-single-mean-test-clt
+#| echo: false
+
+set.seed(1235)
+n <- 28
+mu <- 14
+mu0 <- 15
+sigma <- 4
+
+games <- tibble(hours = rnorm(n, mean = mu, sd = sigma) %>% round(1))
+```
+
+```{webr-r}
+#| context: setup
+#| autorun: true
+
+set.seed(1235)
+n <- 28
+mu <- 14
+mu0 <- 15
+sigma <- 4
+
+games <- tibble(hours = rnorm(n, mean = mu, sd = sigma) %>% round(1))
+```
+
+
+**Scenario**: A group of Trent students is conducting a study to 
+determine if the average number of hours students spend playing video games
+per week at their school is significantly less than `r mu0` hours.
+
+![](fig/dalle-college_videogame_playing.webp){fig-align="center" width="70%"}
+
+## Example: Video Game Hours Played
+
+**Scenario**: A group of Trent students is conducting a study to 
+determine if the average number of hours students spend playing video games
+per week at their school is significantly less than `r mu0` hours.
+
+They randomly sample $n = `r n`$ undergraduate students and record 
+the number of hours each student plays video games per week.
+
+They fire up R and store the data in a data frame called `games` with 
+a single column, `hours`.
+    
+## Example: Video Game Hours Played
+
+**Scenario**: A group of Trent students is conducting a study to 
+determine if the average number of hours students spend playing video games
+per week at their school is significantly less than `r mu0` hours.
+
+They randomly sample $n = `r n`$ undergraduate students and record 
+the number of hours each student plays video games per week.
+
+They fire up R and store the data in a data frame called `games` with 
+a single column, `hours`.
+
+**Tasks**: Conduct a hypothesis test to determine if there is evidence to 
+show that the true mean hours of video game playing per week is not 15
+hours.  
+Use the significance level $\alpha = 0.05$
+
+Also construct a 92\% confidence interval.
+
+## Video Games Hypothesis Test {style="font-size:80%;"}
+
+**Step 1**: Parameter and population  
+Let $\mu$ be the mean number of hours of video games played per week by 
+Trent students.
+
+**Step 2**: Hypotheses -- $H_{0}: \mu \geq 15 \quad \text{vs} \quad H_{A}: \mu < 15$  
+**Step 3**: Assumptions -- Independence and Normality
+
+```{r}
+#| label: clt-single-mean-assumptions
+#| echo: false
+#| eval: false
+#| fig-heigh: 3.8
+
+gg_qq1 <- games %>% ggplot(aes(sample = hours)) +
+  stat_qq() + stat_qq_line() + 
+  labs(x = "Theoretical Quantiles", y = "Empirical Quantiles")
+
+gg_hist1 <- games %>% ggplot(aes(x = hours)) + 
+  geom_histogram(bins = 8, colour = "white") + 
+  labs(y = "Count", x = "Hours Played (per week)")
+
+gg_box1 <- games %>% ggplot(aes(x = hours)) + 
+  geom_boxplot(width = 1.2, staplewidth = 0.3) + 
+  ylim(-1, 1) + 
+  labs(x = "Hours Played (per week)") + 
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
+(gg_box1 / (gg_qq1 + gg_hist1)) + 
+  plot_layout(heights = c(1, 4))
+```
+
+```{webr-r}
+#| fig-height: 3.5
+gg_hist1 <- games %>% ggplot(aes(x = hours)) + 
+  geom_histogram(bins = 8, colour = "white") + 
+  labs(y = "Count", x = "Hours Played (per week)")
+
+gg_box1 <- games %>% ggplot(aes(x = hours)) + 
+  geom_boxplot(width = 1.2, staplewidth = 0.3) + 
+  ylim(-1, 1) + 
+  labs(x = "Hours Played (per week)") + 
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
+# make the QQ-plot
+```
+
+## Step 3: Assumptions -- Normality Plots
+
+```{webr-r}
+#| editor-font-scale: .5
+# use patchwork to combine our plots!
+```
+
+
+
+## Video Game Hours (Step 4) {style="font-size:90%;"}
+
+**Step 4**: Test statistic and $p$-value
+
+- Since the CLT conditions are met, we can use the parametric approach.
+- That is, we take the $Z$-transform of the sample mean.
+    - We know that the $Z$-transform of a normal RV is standard normal;
+    - We have to estimate the population standard deviation, $\sigma$, 
+    and as a result, the $Z$-transform of $\bar{X}$ is actually 
+    $t$-distributed
+        - The $t$-distribution approximates a standard normal with the 
+        approximation getting better as the degrees of freedom (i.e., 
+        sample size) increases.
+
+$$
+t_{stat} = \frac{\bar{x} - \mu_{0}}{SE_{\bar{X}}}
+$$
+
+Then, we find the $p$-value by determining the probability associated with:
+
+$$
+P(T \leq 15) \qquad \text{where } T\sim t_{`r n-1`}
+$$
+
+## Video Game Hours (Step 4 Cont'd) {style="font-size:90%;"}
+
+$$
+t_{stat} = \frac{\bar{x} - \mu_{0}}{SE_{\bar{X}}}
+$$
+
+```{r}
+#| echo: false
+
+n <- nrow(games)
+sd <- games %>% pull(hours) %>% sd()
+se <- sd / sqrt(n)
+mu_null <- 15
+xbar <- games %>% pull(hours) %>% mean()
+
+res_clt1 <- tibble(t_stat = (xbar - mu_null) / se, 
+      p_val = pt(t_stat, df = n - 1, lower.tail = TRUE))
+### --- Use t_test() ---
+res_clt2 <- games %>% 
+  t_test(response = hours, mu = mu_null, alternative = "less")
+```
+
+```{webr-r}
+
+n <- nrow(games)
+sd <- games %>% pull(hours) %>% sd()
+se <- sd / sqrt(n)
+mu_null <- 15
+xbar <- games %>% pull(hours) %>% mean()
+
+# t_stat <- 
+# HA: mu > mu0
+# p_val <- 
+
+### --- Use t_test() ---
+# games %>% t_test()
+```
+
+```{r}
+#| echo: false
+#| eval: false
+
+cbind(tibble(garbo = 1), res_clt1, tibble(t_stat2 = res_clt2 %>% pull(statistic), 
+                       p_val2 = res_clt2 %>% pull(p_value))) %>% 
+  adorn_rounding(3) %>% 
+  select(-garbo) %>% 
+  kable(align = "c", col.names = rep(c("t-Statistic", "p-value"), 2)) %>% 
+  kable_styling(font_size = 26) %>% 
+  add_header_above(c("By Hand" = 2, "t.test()" = 2)) %>% 
+  column_spec(2, border_right = TRUE)
+```
+
+## Step 5 and 6: Statistical Decision
+
+Since the $p$-value is greater than the significance level 
+($`r res_clt1 %>% pull(p_val) %>% round(4)` > 0.05$), we would 
+**fail to reject** the null hypothesis.
+
+There is not enough evidence to conclude that the mean number hours 
+spent playing video games is less than 15 hours per week.
+
+## Parametric 92% Confidence Interval
+
+_Population and parameter were already defined and assumption check _
+_is the same for the CI as it is for the HT (for a single mean)._
+
+$$
+\bar{x} \pm t^{\star}\cdot SE_{\bar{X}} \qquad \text{where} \quad P(T > t^{\star}) = 0.04
+$$
+
+```{r}
+## "by hand"
+t_star <- qt((1 - 0.92) / 2, df = n - 1, lower.tail = FALSE)
+ci1 <- xbar + c(-1, 1) * t_star * se
+### --- use t.test()
+ci2 <- games %>% t_test(response = hours, conf_level = 0.92, 
+              alternative = "two.sided")
+```
+
+```{r}
+#| echo: false
+
+tibble(garbo = 12, l1 = ci1[1], u1 = ci1[2], l2 = ci2 %>% pull(lower_ci), 
+       u2 = ci2 %>% pull(upper_ci)) %>% 
+  adorn_rounding(2) %>% 
+  select(-garbo) %>% 
+  kable(align = "c", col.names = rep(c("Lower Endpoint", "Upper Endpoint"), 2)) %>% 
+  kable_styling(font_size = 26) %>% 
+  add_header_above(c("By Hand" = 2, "t_test()" = 2)) %>% 
+  column_spec(2, border_right = TRUE)
+```
+
+# Video Game Hours - CLT Conditions Not Met
+
+## Video Game Hours - Take 2 {style="font-size:90%;"}
+
+- Same setup: $n = `r n`$ observations, $H_{A}: \mu < 15$;
+- _Different sample_ (`hours2` data frame); check the CLT conditions again.
+
+```{r}
+#| echo: false
+
+set.seed(11234)
+games2 <- tibble(hours = c(rchisq(n-4, df = 11), 
+                           23.7, 24.2, 32.7, 26.3))
+```
+
+
+```{r}
+#| label: infer-single-mean-assumptions
+#| echo: false
+#| eval: false
+
+set.seed(11234)
+games2 <- tibble(hours = c(rchisq(n-4, df = 11), 
+                           23.7, 24.2, 32.7, 26.3))
+
+gg_qq2 <- games2 %>% ggplot(aes(sample = hours)) +
+  stat_qq() + stat_qq_line() + 
+  labs(x = "Theoretical Quantiles", y = "Empirical Quantiles")
+
+gg_hist2 <- games2 %>% ggplot(aes(x = hours)) + 
+  geom_histogram(bins = 10, colour = "white") + 
+  labs(y = "Count", x = "Hours Played (per week)")
+
+gg_box2 <- games2 %>% ggplot(aes(x = hours)) + 
+  geom_boxplot(width = 1.2, staplewidth = 0.3) + 
+  ylim(-1, 1) + 
+  labs(x = "Hours Played (per week)") + 
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+```
+
+```{webr-r}
+#| context: setup
+#| autorun: true
+
+set.seed(11234)
+games2 <- tibble(hours = c(rchisq(n-4, df = 11), 
+                           23.7, 24.2, 32.7, 26.3))
+```
+
+```{webr-r}
+#| autorun: true
+
+gg_qq2 <- games2 %>% ggplot(aes(sample = hours)) +
+  stat_qq() + stat_qq_line() + 
+  labs(x = "Theoretical Quantiles", y = "Empirical Quantiles")
+
+gg_hist2 <- games2 %>% ggplot(aes(x = hours)) + 
+  geom_histogram(bins = 10, colour = "white") + 
+  labs(y = "Count", x = "Hours Played (per week)")
+
+gg_box2 <- games2 %>% ggplot(aes(x = hours)) + 
+  geom_boxplot(width = 1.2, staplewidth = 0.3) + 
+  ylim(-1, 1) + 
+  labs(x = "Hours Played (per week)") + 
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+```
+
+## Patchwork Diagnostic Plots
+
+
+```{webr-r}
+#| fig-height: 4
+# we have gg_qq2, gg_hist2, and gg_box2
+# use patchwork and plot_layout() to make this work!
+```
+
+## Step 4 {style="font-size:90%;"}
+
+- The Normality condition of the CLT is suspect here
+- Use a _bootstrap test_.
+
+**Approximate the null distribution using the bootstrap**:
+
+```{r}
+#| label: infer-null-dist
+#| cache: true
+
+null_dist <- games2 %>% 
+  specify(response = hours) %>% 
+  hypothesize(null = "point", mu = mu_null) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+obs_mean <- games2 %>% pull(hours) %>% mean()
+
+p_val <- null_dist %>% get_p_value(obs_stat = obs_mean, 
+                                   direction = "less")
+p_val
+```
+
+## Step 4, 5, and 6 {style="font-size:90%;"}
+
+::::{.columns}
+:::{.column width="65%"}
+### Step 4 (Visualization)
+
+```{r}
+#| fig-align: center
+
+null_dist %>% visualize() + 
+  shade_p_value(obs_stat = obs_mean, 
+                direction = "less")
+```
+:::
+:::{.column width="35%"}
+### Step 5 and 6
+
+Since the $p$-value is smaller than 0.05, we would **reject** 
+the null hypothesis.
+
+There is evidence to conclude that the mean number of hours spent 
+playing video games is less than 15 hours per week.
+
+:::::{.callout-important}
+### Different Outcome
+_NOT_ the same dataset as the first example.
+:::::
+:::
+::::
+
+## 92\% Confidence Interval
+
+There are two ways to construct a confidence interval using 
+`infer`:
+
+- _bootstrap percentile_
+    - obtain sampling distribution for the sample mean, $\bar{X}$.
+    - use quantiles to estimate the confidence interval
+- _bootstrap-$t$_
+    - **You will not be asked to use this method any going forward**
+    - obtain sampling distribution for the $t$-statistic
+    - use quantiles to find the $Q^{\star}$-values and then the formula
+    
+    
+$$
+\bar{x} - Q^{\star}\cdot SE_{\bar{X}}
+$$
+
+
+## 92\% Bootstrap Percentile CI
+
+Estimate the sampling distribution, then find quantiles:
+
+```{r}
+#| cache: true
+
+samp_dist <- games2 %>% 
+  specify(response = hours) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+samp_dist %>% get_ci(level = 0.92)
+```
+
+## 92\% Bootstrap-$t$ CI
+
+```{r}
+se <- sd(games2$hours) / sqrt(n)
+
+samp_dist_t <- games2 %>% 
+  specify(response = hours) %>% 
+  hypothesize(null = "point", mu = mean(games2$hours)) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "t")
+
+q_star <- samp_dist_t %>% get_ci(level = 0.92) %>% rev()
+ci <- xbar - q_star * se
+names(ci) <- c("lower_ci", "upper_ci")
+
+ci
+```
+
+## `infer` CI Comparison
+
+```{r}
+#| echo: false
+
+tibble(Method = c("Bootstrap Percentile", "Bootstrap-t"), 
+       rbind(boot_perc = samp_dist %>% get_ci(level = 0.92), 
+             boot_t = ci)) %>% 
+  adorn_rounding(2) %>% 
+  kable(align = "c", col.names = c("Method", "Lower Endpoint", 
+                                   "Upper Endpoint")) %>% 
+  kable_styling() %>% 
+  column_spec(1, bold = TRUE)
+```
+
+# Paired Samples Test of Mean Difference
+
+## Review - Paired Samples Mean Test
+
+- We saw last semester that the paired samples test of mean difference 
+starts with having paired observations.
+- Paired samples are two sets of observations where each observation 
+in one set is related to a specific observation in the other set.
+    - before and after measurements;
+    - the same "unit" (textbooks)
+- In this case, we take the difference between each pair of observations
+and then treat this as a single sample t-test again!
+
+
+## Review - Paired Samples Mean Test
+
+- We saw last semester that the paired samples test of mean difference 
+starts with having paired observations.
+- Paired samples are two sets of observations where each observation 
+in one set is related to a specific observation in the other set.
+    - before and after measurements;
+    - the same "unit" (textbooks)
+- In this case, we take the difference between each pair of observations
+and then treat this as a single sample t-test again!
+
+- **Parameter**: $\mu_{diff}$  
+_Assuming we have $x$ and $w$ observations which are paired._
+- **Estimator**: $\bar{X}_{diff} = \frac{1}{n} \sum_{i = 1}^{n}(X_{i} - W_{i})$
+- **Point Estimate**: $\bar{x}_{diff} = \frac{1}{n} \sum_{i = 1}^{n}(x_{i} - w_{i})$
+
+## Example: Helldivers 2
+
+A certain lover of statistics, gadget, AI, and video games was wondering if 
+a particular perk in HD2 improved the amount of democracy that they were 
+able to spread.
+
+![](fig/hd-2-trailer-screenshot-dicebreaker.jpeg){fig-align="center" width="60%"}
+
+## Example: Helldivers 2
+
+A certain lover of statistics, gadget, AI, and video games was wondering if 
+a particular perk in HD2 improved the amount of democracy that they were 
+able to spread.
+
+In the name of science they played each mission type for each enemy 
+faction with and without the perk.
+
+In total, they played 16 missions with the perk and 16 without the perk.
+
+The number of enemies who received a piping-hot cup of Liber-Tea were 
+recorded (contained in the data frame `democracy`^[It's an "enemies 
+defeated" count, that's all that number is... ]).
+
+```{r}
+#| echo: false
+
+set.seed(1234)
+democracy <- tibble(without_perk = c(500, 101, 356, 198, 423, 
+                                     354, 121, 406), 
+                    with_perk = without_perk + rnorm(8, mean = 50, sd = 10))
+democracy %>% glimpse()
+```
+
+```{webr-r}
+#| context: setup
+#| autorun: true
+
+set.seed(1234)
+democracy <- tibble(without_perk = c(500, 101, 356, 198, 423, 
+                                     354, 121, 406), 
+                    with_perk = without_perk + rnorm(8, mean = 50, sd = 10))
+```
+
+## Step 1: Population and Parameter
+
+Let $\mu_{diff}$ be the mean difference in the number of defeated 
+enemies between missions played with the perk and missions played without 
+the perk (i.e., take the differences in the order `[perk] - [no perk]`).
+
+### Step 2: Hypotheses
+
+$$
+H_{0}: \mu_{diff} \leq 0 \quad \text{vs} \quad H_{A}: \mu_{diff} > 0
+$$
+
+### Step 3: Assumptions
+
+We check independence and normality _of the differences_.
+
+## Step 3: Assumptions
+
+First, find the differences:
+```{r}
+democracy <- democracy %>% mutate(diff = with_perk - without_perk)
+```
+
+```{webr-r}
+#| context: setup
+#| autorun: true
+
+democracy <- democracy %>% mutate(diff = with_perk - without_perk)
+```
+
+```{r}
+#| echo: false
+
+gg_qq3 <- democracy %>% ggplot(aes(sample = diff)) +
+  stat_qq() + stat_qq_line() + 
+  labs(x = "Theoretical Quantiles", y = "Empirical Quantiles")
+
+gg_hist3 <- democracy %>% ggplot(aes(x = diff)) + 
+  geom_histogram(bins = 6, colour = "white") + 
+  labs(y = "Count", x = "Difference in Enemies Defeated")
+
+gg_box3 <- democracy %>% ggplot(aes(x = diff)) + 
+  geom_boxplot(width = 1.2, staplewidth = 0.3) + 
+  ylim(-1, 1) + 
+  labs(x = "Difference in Enemies Defeated") + 
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
+(gg_box3 / (gg_qq3 + gg_hist3)) + 
+  plot_layout(heights = c(1, 4)) + 
+  plot_annotation(title = "Normality Check - Differences in Defeated Enemies")
+```
+
+## Step 4: Statistic and $p$-Value
+
+We're not sure if the CLT conditions are met. Looks "okay", but we'll use 
+both approaches:
+
+- CLT approach (parametric $t$-test);
+- `infer` based permutation test
+
+:::{.callout-note}
+### Bootstrap vs. Permutation Test
+Typically, if we have more than one population (missions with the perk 
+and missions without the perk), then we will use a permutation test.  
+When we have a single population, the bootstrap test is much more likely!
+:::
+
+## Step 4: CLT
+
+The test statistic is the same as before:
+
+$$
+t_{stat} = \frac{\bar{x}_{diff} - \mu_{0}}{SE_{\bar{X}_{diff}}}
+$$
+
+We won't do this by hand, however. Let's use `t_test()` instead.
+
+```{r}
+paired_test <- democracy %>% 
+  t_test(response = diff, mu = 0, alternative = "greater")
+
+paired_test %>% select(statistic, t_df, p_value)
+```
+
+## Step 4: Permutation Test (`infer`)
+
+We are permuting the order that the differences are taken in; if 
+the true mean difference is zero, then it doesn't matter (on average) what 
+order we subtract.
+
+```{r}
+#| cache: true
+null_dist <- democracy %>% 
+  specify(response = diff) %>% 
+  hypothesize(null = "paired independence") %>% 
+  generate(reps = 10000, type = "permute") %>% 
+  calculate("mean")
+
+obs_mean_diff <- democracy %>% summarize(mean_diff = mean(diff))
+
+null_dist %>% get_p_value(obs_stat = obs_mean_diff, direction = "greater")
+```
+
+
+```{r}
+#| echo: false
+
+results <- rbind(tibble(method = "Parametric (CLT)", 
+                        t_stat = paired_test %>% pull(statistic),
+                        p_value = paired_test %>% pull(p_value)), 
+  tibble(method = "Permutation Test", 
+         t_stat = NA, 
+         p_value = null_dist %>% get_p_value(obs_stat = obs_mean_diff, 
+                                             direction = "greater") %>% unlist()))
+```
+
+## Step 4: Results
+
+```{r}
+#| echo: false
+
+options(knitr.kable.NA = "-")
+
+results %>% 
+  kable(col.names = c("Method", "t-Statistic", "p-Value"), 
+        align = "c") %>% 
+  kable_styling() %>% 
+  row_spec(0, bold = TRUE) %>% 
+  column_spec(1, bold = TRUE)
+```
+
+## Step 5 and 6: Decision and Conclusion
+
+Regardless of approach, since the $p$-value is smaller than 0.05, we would **reject** the null hypothesis and conclude that there is evidence to show that the mean difference in the number of enemies defeated is greater than zero.
+
+It seems that this perk is helpful in spreading democracy!
+
+![](fig/hd2-hug-gamesradar.png){fig-align="center" width="65%"}
+
+
+
+## Confidence Interval for Mean Difference (CLT)
+
+The confidence interval for the mean difference is constructed 
+in the same way for a single sample mean.
+
+We would check assumptions and if the **Independence** and 
+**Normality** conditions are met, we can use the parametric approach.
+
+$$
+\bar{x}_{diff} \pm t^{\star}\cdot SE_{\bar{X}_{diff}}
+$$
+
+Let's construct a 94\% confidence interval for the mean difference 
+in the number of enemies defeated.
+
+```{r}
+ci <- democracy %>% t_test(response = diff, 
+             conf_level = 0.94, alternative = "two.sided")
+```
+
+```{r}
+#| echo: false
+
+ci_mean_diff <- tibble(method = "CLT", lower_ci = ci %>% pull(lower_ci), 
+                       upper_ci = ci %>% pull(upper_ci)) %>% 
+  adorn_rounding(2)
+
+ci_mean_diff
+```
+
+## CI for Mean Diff (`infer`)
+
+We will focus on using the _bootstrap percentile_ method in this course:
+
+**Bootstrap Percentile Method**:
+
+```{r}
+#| cache: true
+
+samp_dist <- democracy %>% 
+  specify(response = diff) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+ci_mean_diff_bs <- tibble(method = "Bootstrap Percentile", 
+                          samp_dist %>% get_ci(level = 0.94)) %>% 
+  adorn_rounding(2)
+
+ci_mean_diff_bs
+```
+
+## CI Comparison
+
+```{r}
+#| echo: false
+
+rbind(ci_mean_diff, ci_mean_diff_bs) %>% 
+  kable(col.names = c("Method", "Lower Endpoint", "Upper Endpoint"), 
+        align = "c") %>% 
+  kable_styling() %>% 
+  column_spec(1, bold = TRUE)
+```
+
+
+# NEW -- Two Independent Samples Test for Means
+
+## Two Independent Samples Test for Means
+
+- We've seen this before!  
+    - It's the same idea as a test for two proportions.
+- We have two populations and we want to know if the means are different.
+- We can use the CLT conditions to determine if we can use a parametric
+approach (`t_test()`) or if we need to use a simulation approach (`infer`).
+
+## Parameter, Estimator, and Point Estimate
+
+- **Parameter**: $\mu_{1} - \mu_{2}$
+    - The difference in means between two populations.
+    - A _value_, but unkown (and usually unknowable!)
+- **Estimator**: $\bar{X}_{1} - \bar{X}_{2}$
+    - The difference in sample means.
+    - A _statistic_ and an _estimator_ of the parameter; 
+        - the "rule" or "formula" or "function" for how to estimate 
+        the parameter.
+- **Point Estimate**: $\bar{x}_{1} - \bar{x}_{2}$
+    - The difference in sample means.
+    - A _value_ we calculate from observations.
+    
+## Sampling Distribution for $\bar{X}_{1} - \bar{X}_{2}$
+
+**IF** the conditions of:
+
+- **Independence**: within and between groups
+- **Normality**: each group must be "normal enough"
+    - big enough sample size; check for outliers and skew
+    - this depends on the sample sizes and the population distributions
+
+**THEN** the sampling distribution for the difference in sample means is 
+well approximated by a normal distribution as a consequence of the 
+Central Limit Theorem (CLT): 
+
+$$
+\bar{X}_{1} - \bar{X}_{2} \sim N\left(\mu_{1} - \mu_{2}, 
+\sqrt{\frac{\sigma_{1}^{2}}{n_{1}} + \frac{\sigma_{2}^{2}}{n_{2}}}\right)
+$$
+
+## Sampling Distribution for $\bar{X}_{1} - \bar{X}_{2}$
+
+If the CLT conditions are _not_ satisfied, then we can use a 
+_simulation approach_ for inference:
+
+- A **permutation test** for testing the difference in means.
+    - hypothesis testing
+- A **bootstrap** approach for constructing the confidence interval.
+    - confidence interval
+
+# Example: Helldivers2 -- Take 2
+
+## Setup
+
+- Let's use a similar dataset to the one we used for the paired samples 
+test.
+- Now, we'll assume that we have two populations: 
+    - missions played with the perk and missions played without the perk.
+- We randomly sample players from each population (with and without the perk)
+and record the number of enemies defeated.
+
+We use _some_ of the same values, but modify the dataset slightly:
+
+```{webr-r}
+#| context: setup
+#| autorun: true
+
+dem2 <- democracy %>% select(-diff) %>% 
+  pivot_longer(everything(), names_to = "perk_status", 
+               values_to = "enemies_defeated")
+dem2 <- dem2[sample(nrow(dem2)), ]
+dem2$enemies_defeated <- round(dem2$enemies_defeated)
+
+set.seed(12345)
+dem2 <- dem2 %>% 
+  bind_rows(tibble(perk_status = "with_perk", 
+                   enemies_defeated = rnorm(3, mean = 354, sd = 150) 
+                   %>% round()))
+```
+
+::::{.columns}
+:::{.column width="50%"}
+```{r}
+#| echo: false
+
+dem2 <- democracy %>% select(-diff) %>% 
+  pivot_longer(everything(), names_to = "perk_status", 
+               values_to = "enemies_defeated")
+dem2 <- dem2[sample(nrow(dem2)), ]
+dem2$enemies_defeated <- round(dem2$enemies_defeated)
+
+set.seed(12345)
+dem2 <- dem2 %>% 
+  bind_rows(tibble(perk_status = "with_perk", 
+                   enemies_defeated = rnorm(3, mean = 354, sd = 150) 
+                   %>% round()))
+
+dem2 %>% head()
+```
+
+:::
+:::{.column width="50%"}
+- `perk_status`: the group, or population, that we are sampling from.
+- `enemies_defeated`: the number of enemies defeated in a mission.
+- each row is a single observation (different players)
+:::
+::::
+
+## Research Question
+
+Is there evidence to show that the mean number of enemies defeated in 
+missions played with the perk is greater than the mean number of enemies 
+defeated in missions played without the perk?
+
+### Step 1: Parameter and Population
+
+Let $\mu_{1}$ and $\mu_{2}$ be the mean number of enemies defeated in
+missions played with the perk ("yes") and missions played without the perk 
+("no"), respectively.
+
+### Step 2: Hypotheses
+
+$$
+H_{0}: \mu_{1} - \mu_{2} \leq 0 \quad \text{vs} \quad H_{A}: \mu_{1} - \mu_{2} > 0
+$$
+
+## Step 3: Assumptions
+
+We need to check the independence and normality conditions for each group.
+
+```{r}
+#| echo: false
+#| eval: false
+#| fig-align: center
+#| fig-height: 5.5
+
+gg_qq4 <- dem2 %>% ggplot(aes(sample = enemies_defeated)) +
+  stat_qq() + stat_qq_line() + 
+  facet_wrap(~perk_status, 
+    labeller = labeller(perk_status = c("with_perk" = "With Perk Active",
+        "without_perk" = "Without Perk"))) +
+  labs(x = "Theoretical Quantiles", y = "Empirical Quantiles")
+
+gg_hist4 <- dem2 %>% ggplot(aes(x = enemies_defeated)) +
+  geom_histogram(bins = 6, colour = "white") + 
+  facet_wrap(~perk_status, 
+    labeller = labeller(perk_status = c("with_perk" = "With Perk Active",
+        "without_perk" = "Without Perk"))) +
+  labs(y = "Count", x = "Enemies Defeated")
+
+gg_box4 <- dem2 %>% ggplot(aes(x = enemies_defeated, y = perk_status)) +
+  geom_boxplot(staplewidth = 0.5) + 
+  labs(x = "Enemies Defeated", y = "Perk Status") + 
+  scale_y_discrete(labels = c("with_perk" = "Yes", 
+                              "without_perk" = "No"))
+
+(gg_box4 / (gg_qq4 + gg_hist4)) +
+  plot_layout(heights = c(1, 4))
+```
+
+```{webr-r}
+#| fig-height: 4
+## adjust this plot to include _both_ groups of the perk_status variable
+## hint to self: labeller = labeller(perk_status = c()
+
+gg_qq4 <- dem2 %>% ggplot(aes(sample = enemies_defeated)) +
+  stat_qq() + stat_qq_line() + 
+  labs(x = "Theoretical Quantiles", y = "Empirical Quantiles")
+```
+
+
+```{webr-r}
+#| context: setup
+#| autorun: true
+
+gg_hist4 <- dem2 %>% ggplot(aes(x = enemies_defeated)) +
+  geom_histogram(bins = 6, colour = "white") + 
+  facet_wrap(~perk_status, 
+    labeller = labeller(perk_status = c("with_perk" = "With Perk Active",
+        "without_perk" = "Without Perk"))) +
+  labs(y = "Count", x = "Enemies Defeated")
+
+gg_box4 <- dem2 %>% ggplot(aes(x = enemies_defeated, y = perk_status)) +
+  geom_boxplot(staplewidth = 0.5) + 
+  labs(x = "Enemies Defeated", y = "Perk Status") + 
+  scale_y_discrete(labels = c("with_perk" = "Yes", 
+                              "without_perk" = "No"))
+```
+
+## Patchwork Plot
+
+```{webr-r}
+# use patchwork again to combine the plots
+# we have: gg_qq4, gg_hist4, and gg_box4
+```
+
+## Plot Discussion
+
+- We have small sample sizes.
+```{r}
+#| echo: false
+
+dem2 %>% count(perk_status) %>% 
+  kable(col.names = c("Perk Status", "Count"), 
+        align = "cc") %>% 
+  kable_styling(font_size = 22)
+```
+- Everything "looks" okay, but we will run the hypothesis test using 
+both the parametric and simulation approaches.
+
+:::{.callout-note}
+### Running the Test Twice
+This isn't a bad approach regardless. If you are unsure, use both methods 
+and see how well they agree (or disagree).  
+If there is a large discrepancy, then you know that the CLT conditions 
+were likely not met.  
+**Back in Week 2 we showed with simulation that the simulation approach **
+**will get closer to THE $p$-value than using the parametric approach **
+**when we shouldn't be!**
+:::
+
+## Step 4: Using the Parametric Approach
+
+We once again use `t_test()` (how versatile!).
+
+```{r}
+#| echo: false
+
+t_test1 <- dem2 %>% 
+  t_test(enemies_defeated ~ perk_status, 
+         order = c("with_perk", "without_perk"),
+         alternative = "greater", mu = 0)
+```
+
+```{webr-r}
+t_test1 <- dem2 %>% 
+   t_test(___, 
+          order = c("___", "___"), 
+          alternative = "___", mu = ___)
+
+t_test1
+```
+
+```{r}
+#| echo: false
+#| eval: false
+
+t_test1 %>% select(alternative, statistic, t_df, p_value) %>% 
+  adorn_rounding(3) %>% select(-alternative) %>% 
+  kable(col.names = c("t-Statistic", "df", "p-Value"), 
+        align = "c")
+```
+
+
+## Step 4: Using the Simulation Approach
+
+- To run the simulation approach, we use `infer` and a _permutation test_.
+    - If the group (population) means were the same, then it doesn't 
+    matter, on average, which observations are associated with each group!
+    
+```{r}
+#| cache: true
+#| echo: false
+
+null_dist <- dem2 %>% 
+  specify(enemies_defeated ~ perk_status) %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 10000, type = "permute") %>% 
+  calculate(stat = "diff in means", 
+            order = c("with_perk", "without_perk"))
+
+obs_diff <- dem2 %>% 
+  specify(enemies_defeated ~ perk_status) %>% 
+  calculate(stat = "diff in means", 
+            order = c("with_perk", "without_perk"))
+
+p_val_dem2 <- null_dist %>% get_p_value(obs_stat = obs_diff, 
+                                   direction = "greater")
+```
+
+```{webr-r}
+null_dist <- dem2 %>% 
+  specify(___) %>% 
+  hypothesize(null = "___") %>% 
+  generate(reps = 4000, type = "___") %>% 
+  calculate(stat = "___", 
+            order = c("___", "___"))
+
+## Copy from above!
+obs_diff <- dem2 %>% 
+  specify() %>% 
+  calculate()
+
+p_val_dem2 <- null_dist %>% get_p_value(obs_stat = obs_diff, 
+                                   direction = "greater")
+```
+
+## Step 4: Simulation Results
+
+The $p$-value is: `r p_val_dem2 %>% round(4)`.
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+null_dist %>% visualize() + 
+  shade_p_value(obs_stat = obs_diff, 
+                direction = "greater")
+```
+
+
+## Step 4: Comparison
+
+```{r}
+#| echo: false
+#| message: false
+
+t_test1 %>% select(statistic, p_value) %>% 
+  bind_cols(p_val_dem2) %>% bind_cols(tibble(col_name = "p-Value"), .) %>% 
+  adorn_rounding(4) %>% select(-statistic) %>% 
+  kable(col.names = c(" ", "Parametric", "Simulation"), 
+        align = "c") %>% 
+  kable_styling(font_size = 28) %>% 
+  row_spec(0, bold = TRUE) %>% 
+  column_spec(1, bold = TRUE)
+```
+
+![](fig/hd-2-bile-titan-dexerto.png){fig-align="center" width="60%"}
+
+## Step 5 and 6: Decision and Conclusion
+
+Since our $p$-value(s) are larger than a significance level of 
+$\alpha = 0.05$, we would **fail to reject** the null hypothesis.
+
+There is not enough evidence to show that the mean number of enemies 
+defeated in missions played with the perk is greater than the mean number 
+of enemies defeated in missions played without the perk.
+
+### Follow-up
+
+This is different from what we found with one player. Perhaps the perk 
+in question works well with that particular player's play style?
+
+More "investigation" may be required ... 
+
+# Confidence Intervals for the Difference of Two Means
+
+## CI Options
+
+There are two ways^[that we will cover in the course, anyway] to calculate 
+a confidence interval for the difference between two means:
+
+- `t_test()` - Parametric approach which uses the formula:  
+$(\bar{x}_{1} - \bar{x}_{2}) \pm t^{\star}SE_{\bar{x}_{1} - \bar{x}_{2}}$
+- **Bootstrap Percentile**: Using `infer` to bootstrap the difference of means.
+
+## CI -- Parametric Approach {style="font-size:90%;"}
+
+_IF_ the CLT conditions are met (independence and "normality"), then we 
+can use `t_test()` to find confidence intervals based on:
+
+$$
+(\bar{x}_{1} - \bar{x}_{2}) \pm t^{\star}SE_{\bar{x}_{1} - \bar{x}_{2}}
+$$
+
+Let's use the `dem2` data from our last example to calculate a 93\% CI for 
+the difference in means between enemies defeated while using a perk and 
+while not using the perk.
+
+```{r}
+#| echo: false
+#| include: false
+
+ci_results_t <- dem2 %>% 
+  t_test(enemies_defeated ~ perk_status, 
+         order = c("with_perk", "without_perk"), 
+         conf_level = 0.93) %>% 
+  select(lower_ci, upper_ci)
+
+ci_results_t
+```
+
+```{webr-r}
+ci_results_t <- dem2 %>% 
+  t_test(___, 
+         order = c("___", "___"), 
+         conf_level = 0.93) %>% 
+  select(lower_ci, upper_ci)
+
+ci_results_t
+```
+
+## CI -- Bootstrap Percentile
+
+- We bootstrap _both_ the `"with_perk"` and `"without_perk"` groups separately, 
+find the bootstrap sample mean for both groups, then take the difference.
+    - Repeat this thousands of times.
+
+```{r}
+#| echo: false
+set.seed(123456)
+```
+
+```{webr-r}
+#| context: setup
+#| autorun: true
+
+set.seed(123456)
+```
+
+```{r}
+#| cache: true
+#| include: false
+
+samp_dist <- dem2 %>% specify(enemies_defeated ~ perk_status) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "diff in means", 
+            order = c("with_perk", "without_perk"))
+
+ci_results_bs_perc <- samp_dist %>% get_ci(level = 0.93)
+
+ci_results_bs_perc
+```
+
+```{webr-r}
+
+samp_dist <- dem2 %>% specify(___) %>% 
+  generate(reps = 2000, type = "___") %>% 
+  calculate(stat = "___", 
+            order = c("with_perk", "without_perk"))
+
+ci_results_bs_perc <- samp_dist %>% get_ci(level = 0.93)
+
+ci_results_bs_perc
+```
+
+## CI -- Method Comparison
+
+```{r}
+#| echo: false
+
+cbind(tibble(Method = c("Parametric (t_test)", "Bootstrap Percentile (infer)")), 
+      rbind(ci_results_t, ci_results_bs_perc)) %>% 
+  adorn_rounding(2) %>% 
+  kable(col.names = c("Method", "Lower Endpoint", "Upper Endpoint")) %>% 
+  kable_styling(font_size=32) %>% 
+  column_spec(1, bold = TRUE)
+```
+
+We are 93% confident that the difference in the mean number of enemies 
+is in the interval [one of the above intervals].
+
+## Summary
+- Using `t_test()` instead of `t.test()`
+    - consistent syntax with `infer` and `chisq_test()`;
+- We reviewed:
+    - inference (HT and CI) for a single mean
+    - inference (HT and CI) for a paired samples mean difference
+        - The bootstrap-t approach was new for us.
+- We learned about:
+    - inference (HT and CI) for an independent samples difference in means
+
+
+:::{.callout-important}
+### Non-parametric CIs
+Going forward, I will _only_ ask you to use the **bootstrap percentile** 
+method for a simulation based approach to construct a confidence interval.  
+You should be _aware_ that there are "better" approaches, but they start to 
+get more difficult to implement.
+:::
